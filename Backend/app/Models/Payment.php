@@ -15,4 +15,9 @@ class Payment extends Model
         'payment_method',
         'payment_status',
     ];
+
+    public function booking()
+    {
+        return $this->belongsTo(Booking::class);
+    }
 }

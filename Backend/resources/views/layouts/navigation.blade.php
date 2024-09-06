@@ -5,15 +5,37 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
+                    <a href="{{ route('dashboard') }}" class="custom-logo-text">
+                        City Car Taxi
                     </a>
                 </div>
+
+                <style>
+                    .custom-logo-text {
+                        font-family: 'Arial', sans-serif; /* Replace with your desired font */
+                        font-weight: bold;
+                        font-size: 1.5rem; /* Adjust the size */
+                        color: #111827; /* Light mode color */
+                        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Adds a subtle shadow */
+                    }
+
+                    /* Dark mode color */
+                    @media (prefers-color-scheme: dark) {
+                        .custom-logo-text {
+                            color: #415c90; /* Adjust this to your preferred dark mode color */
+                        }
+                    }
+                </style>
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
+                    </x-nav-link>
+                </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('passengers')" :active="request()->routeIs('passengers')">
+                        {{ __('Passengers') }}
                     </x-nav-link>
                 </div>
             </div>

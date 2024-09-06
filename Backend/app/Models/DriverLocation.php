@@ -14,4 +14,9 @@ class DriverLocation extends Model
         'latitude',
         'longitude',
     ];
+
+    public function driver()
+    {
+        return $this->belongsTo(Customer::class, 'driver_id');
+    }
 }

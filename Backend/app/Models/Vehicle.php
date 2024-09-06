@@ -16,4 +16,9 @@ class Vehicle extends Model
         'brand',
         'color',
     ];
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
+    }
 }

@@ -24,4 +24,33 @@ class Booking extends Model
         'fare',
         'status',
     ];
+
+    /**
+     * Get the driver associated with the booking.
+     */
+    public function driver()
+    {
+        return $this->belongsTo(Customer::class, 'driver_id');
+    }
+
+    public function passenger()
+    {
+        return $this->belongsTo(Customer::class, 'passenger_id');
+    }
+
+    /**
+     * Get the vehicle associated with the booking.
+     */
+    public function vehicle()
+    {
+        return $this->belongsTo(Vehicle::class);
+    }
+
+    /**
+     * Get the rating associated with this booking.
+     */
+    public function rating()
+    {
+        return $this->hasOne(DriverRating::class);
+    }
 }

@@ -18,4 +18,24 @@ class Customer extends Authenticatable
         'rating',
         'status',
     ];
+
+    public function vehicles()
+    {
+        return $this->hasMany(Vehicle::class);
+    }
+
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
+
+    public function driverLocations()
+    {
+        return $this->hasMany(DriverLocation::class);
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
 }

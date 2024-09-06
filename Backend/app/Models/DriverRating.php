@@ -15,4 +15,14 @@ class DriverRating extends Model
         'rating',
         'comment',
     ];
+
+    public function driver()
+    {
+        return $this->belongsTo(Customer::class, 'driver_id');
+    }
+
+    public function booking()
+    {
+        return $this->belongsTo(Booking::class);
+    }
 }
