@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Booking extends Model
+class Trip extends Model
 {
     use HasFactory;
 
@@ -30,27 +30,11 @@ class Booking extends Model
      */
     public function driver()
     {
-        return $this->belongsTo(Customer::class, 'driver_id');
+        return $this->belongsTo(Driver::class);
     }
 
     public function passenger()
     {
-        return $this->belongsTo(Customer::class, 'passenger_id');
-    }
-
-    /**
-     * Get the vehicle associated with the booking.
-     */
-    public function vehicle()
-    {
-        return $this->belongsTo(Vehicle::class);
-    }
-
-    /**
-     * Get the rating associated with this booking.
-     */
-    public function rating()
-    {
-        return $this->hasOne(DriverRating::class);
+        return $this->belongsTo(Passenger::class);
     }
 }

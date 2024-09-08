@@ -2,44 +2,43 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Booking;
+use App\Models\Trip;
 use Illuminate\Http\Request;
 
-class BookingController extends Controller
+class TripController extends Controller
 {
     public function create(Request $request)
     {
-        $booking = Booking::create([
+        $trip = Trip::create([
             'passenger_id' => $request->passenger_id,
             'driver_id' => $request->driver_id,
-            'vehicle_id' => $request->vehicle_id,
             'pickup_location' => $request->pickup_location,
             'dropoff_location' => $request->dropoff_location,
             'pickup_time' => $request->pickup_time,
             'status' => 'PENDING'
         ]);
 
-        return response()->json($booking, 201);
+        return response()->json($trip, 201);
     }
 
     public function index()
     {
-        $bookings = Booking::all();
-        return response()->json($bookings);
+        $trips = Trip::all();
+        return response()->json($trips);
     }
 
     public function updateStatus(Request $request, $id)
     {
-        $booking = Booking::findOrFail($id);
-        $booking->status = $request->status;
-        $booking->save();
+        $trip = Trip::findOrFail($id);
+        $trip->status = $request->status;
+        $trip->save();
 
-        return response()->json($booking);
+        return response()->json($trip);
     }
 
     public function show($id)
     {
-        $booking = Booking::findOrFail($id);
-        return response()->json($booking);
+        $trip = Trip::findOrFail($id);
+        return response()->json($trip);
     }
 }
