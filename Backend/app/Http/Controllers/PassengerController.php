@@ -33,7 +33,7 @@ class PassengerController extends Controller
                 'name' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255|unique:passengers',
                 'password' => 'required|string|min:8|confirmed',
-                'phone_number' => 'nullable|string|max:20',
+                'phone_number' => 'required|string|max:20',
             ]);
 
             Passenger::create([
