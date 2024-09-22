@@ -11,16 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('customers', function (Blueprint $table) {
+        Schema::create('drivers', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('phone_number')->nullable();
-            $table->enum('user_type', ['passenger', 'driver']);
-            $table->float('rating')->nullable();  // Only relevant for drivers
-            $table->enum('status', ['AVAILABLE', 'BUSY'])->nullable();  // Only relevant for drivers
+            $table->enum('status', ['AVAILABLE', 'BUSY'])->nullable();
+            $table->decimal('latitude', 10, 8);
+            $table->decimal('longitude', 11, 8);
+            $table->string('vehicle_number')->unique();
+            $table->string('model');
+            $table->string('brand');
+            $table->string('color');
             $table->rememberToken();
             $table->timestamps();
         });
@@ -31,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('customers');
+        Schema::dropIfExists('drivers');
     }
 };

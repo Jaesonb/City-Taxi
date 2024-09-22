@@ -16,8 +16,8 @@ class Payment extends Model
         'payment_status',
     ];
 
-    public function booking()
+    public function trip()
     {
-        return $this->belongsTo(Booking::class);
+        return $this->belongsTo(Trip::class);
     }
 }

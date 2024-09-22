@@ -8,7 +8,6 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="mb-4 flex justify-end">
-                <!-- Button to Create Passenger Page -->
                 <a href="{{ route('passengers.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                     {{ __('Create Passenger') }}
                 </a>
@@ -59,12 +58,10 @@
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                         <div class="flex">
-                                            <!-- Edit Link -->
                                             <a href="{{ route('passengers.edit', $passenger->id) }}" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300">
                                                 {{ __('Edit') }}
                                             </a>
 
-                                            <!-- Delete Button -->
                                             <form action="{{ route('passengers.destroy', $passenger->id) }}" method="POST" class="delete-passenger-form" style="margin-left: 20px;">
                                                 @csrf
                                                 @method('DELETE')
