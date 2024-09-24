@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Payment; // Using Payment model
+use App\Models\Trip;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -17,27 +18,28 @@ class PaymentController extends Controller
             return view('payments.index', compact('payments'));
         } catch (\Exception $e) {
             Log::error('Error fetching payments: ' . $e->getMessage());
-            return redirect()->route('payments')->with('error', 'Error fetching payments.');
+            return redirect()->route('payments')->with('error', 'Error fetching payments: ' . $e->getMessage());
         }
     }
 
     public function create()
     {
-        return view('payments.create');
+        $trips = Trip::all();
+        return view('payments.create', compact('trips'));
     }
 
     public function store(Request $request)
     {
         try {
             $request->validate([
-                'booking_id' => 'required|string|max:255',
+                'trip_id' => 'required|string|max:255',
                 'amount'=> 'required|string|max:255',
-                'payment_method'=> 'required|string|max:255',
-                'payment_status'=> 'required|string|max:255',
+                'payment_method'=> 'required|string|max:255|in:cash,card,online',
+                'payment_status'=> 'required|string|max:255|in:pending,paid,failed',
             ]);
 
-            Passenger::create([
-                'booking_id'=> $request->booking_id,
+            Payment::create([
+                'trip_id'=> $request->trip_id,
                 'amount'=> $request->amount,
                 'payment_method'=> $request->payment_method,
                 'payment_status'=> $request->payment_status,
@@ -56,13 +58,13 @@ class PaymentController extends Controller
     public function show($id)
     {
         try {
-            $passenger = Payment::findOrFail($id);
+            $payment = Payment::findOrFail($id);
             return view('payments.show', compact('payment'));
         } catch (ModelNotFoundException $e) {
             return redirect()->route('payments')->with('error', 'Payment not found.');
         } catch (\Exception $e) {
             Log::error('Error fetching payment: ' . $e->getMessage());
-            return redirect()->route('payments')->with('error', 'Error fetching payment details.');
+            return redirect()->route('payments')->with('error', 'Error fetching payment details: ' . $e->getMessage());
         }
     }
 
@@ -75,7 +77,7 @@ class PaymentController extends Controller
             return redirect()->route('payments')->with('error', 'Payment not found.');
         } catch (\Exception $e) {
             Log::error('Error fetching payment for edit: ' . $e->getMessage());
-            return redirect()->route('payments')->with('error', 'Error fetching payment for edit.');
+            return redirect()->route('payments')->with('error', 'Error fetching payment for edit: ' . $e->getMessage());
         }
     }
 
@@ -85,14 +87,14 @@ class PaymentController extends Controller
             $payment = Payment::findOrFail($id);
 
             $request->validate([
-                'booking_id' => 'required|string|max:255'.$payment->id,
+                'trip_id' => 'required|string|max:255'.$payment->id,
                 'amount'=> 'required|string|max:255',
-                'payment_method'=> 'required|string|max:255|(cash,card,online)',
-                'payment_status'=> 'required|string|max:255|(pending,paid,failed)',
+                'payment_method'=> 'required|string|max:255|in:cash,card,online',
+                'payment_status'=> 'required|string|max:255|in:pending,paid,failed',
             ]);
 
             $payment->update([
-                'booking_id'=> $request->booking_id,
+                'trip_id'=> $request->trip_id,
                 'amount'=> $request->amount,
                 'payment_method'=> $request->payment_method,
                 'payment_status'=> $request->payment_status,
@@ -103,7 +105,7 @@ class PaymentController extends Controller
             return redirect()->route('payments')->with('error', 'Payment not found.');
         } catch (\Exception $e) {
             Log::error('Error updating payment: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Error updating payment.');
+            return redirect()->back()->with('error', 'Error updating payment: ' . $e->getMessage());
         }
     }
 
@@ -118,7 +120,7 @@ class PaymentController extends Controller
             return redirect()->route('payments')->with('error', 'Payment not found.');
         } catch (\Exception $e) {
             Log::error('Error deleting payment: ' . $e->getMessage());
-            return redirect()->route('payments')->with('error', 'Error deleting payment.');
+            return redirect()->route('payments')->with('error', 'Error deleting payment: ' . $e->getMessage());
         }
     }
 
@@ -126,14 +128,14 @@ class PaymentController extends Controller
     {
         try {
             $query = $request->input('query');
-            $payments = Payment::where('booking_id', 'like', '%' . $query . '%')
+            $payments = Payment::where('trip_id', 'like', '%' . $query . '%')
                 ->orWhere('amount', 'like', '%' . $query . '%')
                 ->get();
 
             return view('payments.index', compact('payments'));
         } catch (\Exception $e) {
             Log::error('Error searching payments: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Error searching payments.');
+            return redirect()->back()->with('error', 'Error searching payments: ' . $e->getMessage());
         }
     }
 
@@ -148,7 +150,7 @@ class PaymentController extends Controller
             return redirect()->route('payments')->with('error', 'Payment not found.');
         } catch (\Exception $e) {
             Log::error('Error fetching payment trips: ' . $e->getMessage());
-            return redirect()->route('payments')->with('error', 'Error fetching trips.');
+            return redirect()->route('payments')->with('error', 'Error fetching trips: ' . $e->getMessage());
         }
     }
 

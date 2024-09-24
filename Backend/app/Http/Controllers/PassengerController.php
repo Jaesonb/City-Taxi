@@ -17,7 +17,7 @@ class PassengerController extends Controller
             return view('passengers.index', compact('passengers'));
         } catch (\Exception $e) {
             Log::error('Error fetching passengers: ' . $e->getMessage());
-            return redirect()->route('passengers')->with('error', 'Error fetching passengers.');
+            return redirect()->route('passengers')->with('error', 'Error fetching passengers: ' . $e->getMessage());
         }
     }
 
@@ -62,7 +62,7 @@ class PassengerController extends Controller
             return redirect()->route('passengers')->with('error', 'Passenger not found.');
         } catch (\Exception $e) {
             Log::error('Error fetching passenger: ' . $e->getMessage());
-            return redirect()->route('passengers')->with('error', 'Error fetching passenger details.');
+            return redirect()->route('passengers')->with('error', 'Error fetching passenger details: ' . $e->getMessage());
         }
     }
 
@@ -75,7 +75,7 @@ class PassengerController extends Controller
             return redirect()->route('passengers')->with('error', 'Passenger not found.');
         } catch (\Exception $e) {
             Log::error('Error fetching passenger for edit: ' . $e->getMessage());
-            return redirect()->route('passengers')->with('error', 'Error fetching passenger for edit.');
+            return redirect()->route('passengers')->with('error', 'Error fetching passenger for edit: ' . $e->getMessage());
         }
     }
 
@@ -103,7 +103,7 @@ class PassengerController extends Controller
             return redirect()->route('passengers')->with('error', 'Passenger not found.');
         } catch (\Exception $e) {
             Log::error('Error updating passenger: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Error updating passenger.');
+            return redirect()->back()->with('error', 'Error updating passenger: ' . $e->getMessage());
         }
     }
 
@@ -118,7 +118,7 @@ class PassengerController extends Controller
             return redirect()->route('passengers')->with('error', 'Passenger not found.');
         } catch (\Exception $e) {
             Log::error('Error deleting passenger: ' . $e->getMessage());
-            return redirect()->route('passengers')->with('error', 'Error deleting passenger.');
+            return redirect()->route('passengers')->with('error', 'Error deleting passenger: ' . $e->getMessage());
         }
     }
 
@@ -133,7 +133,7 @@ class PassengerController extends Controller
             return view('passengers.index', compact('passengers'));
         } catch (\Exception $e) {
             Log::error('Error searching passengers: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Error searching passengers.');
+            return redirect()->back()->with('error', 'Error searching passengers: ' . $e->getMessage());
         }
     }
 
@@ -148,7 +148,14 @@ class PassengerController extends Controller
             return redirect()->route('passengers')->with('error', 'Passenger not found.');
         } catch (\Exception $e) {
             Log::error('Error fetching passenger trips: ' . $e->getMessage());
-            return redirect()->route('passengers')->with('error', 'Error fetching trips.');
+            return redirect()->route('passengers')->with('error', 'Error fetching trips: ' . $e->getMessage());
         }
+    }
+
+    public function showTrips($id)
+    {
+        $passenger = Passenger::with('trips.payment')->findOrFail($id);
+
+        return view('passengers.trips', compact('passenger'));
     }
 }

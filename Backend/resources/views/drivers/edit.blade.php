@@ -46,7 +46,7 @@
 
                         <div class="mb-4">
                             <label for="phone_number" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Phone Number') }}</label>
-                            <input type="text" name="phone_number" id="phone_number" value="{{ old('phone_number', $driver->phone_number) }}" class="mt-1 block w-full rounded-md shadow-sm dark:bg-gray-700 dark:text-gray-300"required>
+                            <input type="text" name="phone_number" id="phone_number" value="{{ old('phone_number', $driver->phone_number) }}" class="mt-1 block w-full rounded-md shadow-sm dark:bg-gray-700 dark:text-gray-300" required>
                             @error('phone_number')
                                 <span class="text-sm text-red-600">{{ $message }}</span>
                             @enderror
@@ -54,37 +54,37 @@
 
                         <div class="mb-4">
                             <label for="vehicle_number" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Vehicle Number') }}</label>
-                            <input type="text" name="vehicle_number" id="vehicle_number" value="{{ old('vehicle_number', $driver->vehicle_number) }}"class="mt-1 block w-full rounded-md shadow-sm dark:bg-gray-700 dark:text-gray-300"required>
+                            <input type="text" name="vehicle_number" id="vehicle_number" value="{{ old('vehicle_number', $driver->vehicle_number) }}" class="mt-1 block w-full rounded-md shadow-sm dark:bg-gray-700 dark:text-gray-300" required>
                         </div>
 
                         <div class="mb-4">
-                            <label for="stauts" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Status') }}</label>
-                            <input type="text" name="stauts" id="stauts" value="{{ old('status',, $driver->status) }}"class="mt-1 block w-full rounded-md shadow-sm dark:bg-gray-700 dark:text-gray-300"required>>
+                            <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Status') }}</label>
+                            <input type="text" name="status" id="status" value="{{ old('status', $driver->status) }}" class="mt-1 block w-full rounded-md shadow-sm dark:bg-gray-700 dark:text-gray-300" required>
                         </div>
 
                         <div class="mb-4">
-                            <label for="car color" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Car Color') }}</label>
-                            <input type="color" name="car color" id="car color" value="{{ old('car color',, $driver->carcolor) }}"class="mt-1 block w-full rounded-md shadow-sm dark:bg-gray-700 dark:text-gray-300"required>>
+                            <label for="car_color" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Car Color') }}</label>
+                            <input type="color" name="car_color" id="car_color" value="{{ old('car_color', $driver->carcolor) }}" class="mt-1 block w-full rounded-md shadow-sm dark:bg-gray-700 dark:text-gray-300" required>
                         </div>
 
                         <div class="mb-4">
-                            <label for="car model" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Car Model') }}</label>
-                            <input type="text" name="car model" id="car model" value="{{ old('car model',, $driver->carmodel) }}"class="mt-1 block w-full rounded-md shadow-sm dark:bg-gray-700 dark:text-gray-300"required>>
+                            <label for="car_model" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Car Model') }}</label>
+                            <input type="text" name="car_model" id="car_model" value="{{ old('car_model', $driver->carmodel) }}" class="mt-1 block w-full rounded-md shadow-sm dark:bg-gray-700 dark:text-gray-300" required>
                         </div>
 
                         <div class="mb-4">
-                            <label for="car brand" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Car Brand') }}</label>
-                            <input type="text" name="car brand" id="car brand" value="{{ old('car brand',, $driver->carbrand) }}"class="mt-1 block w-full rounded-md shadow-sm dark:bg-gray-700 dark:text-gray-300"required>>
+                            <label for="car_brand" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Car Brand') }}</label>
+                            <input type="text" name="car_brand" id="car_brand" value="{{ old('car_brand', $driver->carbrand) }}" class="mt-1 block w-full rounded-md shadow-sm dark:bg-gray-700 dark:text-gray-300" required>
                         </div>
 
                         <div class="mb-4">
                             <label for="latitude" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Latitude') }}</label>
-                            <input type="text" name="latitude" id="latitude" value="{{ old('latitude',, $driver->latitude) }}"class="mt-1 block w-full rounded-md shadow-sm dark:bg-gray-700 dark:text-gray-300"required>>
+                            <input type="text" name="latitude" id="latitude" value="{{ old('latitude', $driver->latitude) }}" class="mt-1 block w-full rounded-md shadow-sm dark:bg-gray-700 dark:text-gray-300" required>
                         </div>
 
                         <div class="mb-4">
                             <label for="longitude" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Longitude') }}</label>
-                            <input type="text" name="longitude" id="longitude" value="{{ old('longitude',, $driver->longitude) }}"class="mt-1 block w-full rounded-md shadow-sm dark:bg-gray-700 dark:text-gray-300"required>>
+                            <input type="text" name="longitude" id="longitude" value="{{ old('longitude', $driver->longitude) }}" class="mt-1 block w-full rounded-md shadow-sm dark:bg-gray-700 dark:text-gray-300" required>
                         </div>
 
                         <div class="flex justify-end">

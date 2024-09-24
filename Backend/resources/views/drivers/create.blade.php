@@ -43,8 +43,10 @@
                         <div class="mb-4">
                             <label for="password_confirmation" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Confirm Password') }}</label>
                             <input type="password" name="password_confirmation" id="password_confirmation" class="mt-1 block w-full rounded-md shadow-sm dark:bg-gray-700 dark:text-gray-300" required>
+                            @error('password_confirmation')
+                                <span class="text-sm text-red-600">{{ $message }}</span>
+                            @enderror
                         </div>
-
 
                         <div class="mb-4">
                             <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Email') }}</label>
@@ -64,36 +66,50 @@
 
                         <div class="mb-4">
                             <label for="vehicle_number" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Vehicle Number') }}</label>
-                            <input type="text" vehicle_number="vehicle_number" id="vehicle_number" value="{{ old('vehicle_number') }}" class="mt-1 block w-full rounded-md shadow-sm dark:bg-gray-700 dark:text-gray-300" required>
+                            <input type="text" name="vehicle_number" id="vehicle_number" value="{{ old('vehicle_number') }}" class="mt-1 block w-full rounded-md shadow-sm dark:bg-gray-700 dark:text-gray-300" required>
                             @error('vehicle_number')
                                 <span class="text-sm text-red-600">{{ $message }}</span>
                             @enderror
                         </div>
-                        
+
                         <div class="mb-4">
                             <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Status') }}</label>
-                            <input type="text" name="status" id="status" value="{{ old('status') }}"class="mt-1 block w-full rounded-md shadow-sm dark:bg-gray-700 dark:text-gray-300"required>
-                        </div>
-
-
-                        <div class="mb-4">
-                            <label for="car color" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Car Color') }}</label>
-                            <input type="color" name="car color" id="" class="mt-1 block w-full rounded-md shadow-sm dark:bg-gray-700 dark:text-gray-300" required>
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="car model" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Car Model') }}</label>
-                            <input type="text" name="car model" id="" value="{{ old('car model') }}"class="mt-1 block w-full rounded-md shadow-sm dark:bg-gray-700 dark:text-gray-300" required>
+                            <select name="status" id="status" class="mt-1 block w-full rounded-md shadow-sm dark:bg-gray-700 dark:text-gray-300" required>
+                                <option value="available" {{ old('status') == 'available' ? 'selected' : '' }}>Available</option>
+                                <option value="busy" {{ old('status') == 'busy' ? 'selected' : '' }}>Busy</option>
+                            </select>
+                            @error('status')
+                                <span class="text-sm text-red-600">{{ $message }}</span>
+                            @enderror
                         </div>
 
                         <div class="mb-4">
-                            <label for="car brand" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Car Brand') }}</label>
-                            <input type="text" name="car brand" id="" value="{{ old('car brand') }}"class="mt-1 block w-full rounded-md shadow-sm dark:bg-gray-700 dark:text-gray-300" required>
+                            <label for="color" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Car Color') }}</label>
+                            <input type="text" name="color" id="color" value="{{ old('color') }}" class="mt-1 block w-full rounded-md shadow-sm dark:bg-gray-700 dark:text-gray-300" required>
+                            @error('color')
+                                <span class="text-sm text-red-600">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="model" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Car Model') }}</label>
+                            <input type="text" name="model" id="model" value="{{ old('model') }}" class="mt-1 block w-full rounded-md shadow-sm dark:bg-gray-700 dark:text-gray-300" required>
+                            @error('model')
+                                <span class="text-sm text-red-600">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="brand" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Car Brand') }}</label>
+                            <input type="text" name="brand" id="brand" value="{{ old('brand') }}" class="mt-1 block w-full rounded-md shadow-sm dark:bg-gray-700 dark:text-gray-300" required>
+                            @error('brand')
+                                <span class="text-sm text-red-600">{{ $message }}</span>
+                            @enderror
                         </div>
 
                         <div class="mb-4">
                             <label for="latitude" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Latitude') }}</label>
-                            <input type="text" name="latitude" id="latitude" class="mt-1 block w-full rounded-md shadow-sm dark:bg-gray-700 dark:text-gray-300" required>
+                            <input type="text" name="latitude" id="latitude" value="{{ old('latitude') }}" class="mt-1 block w-full rounded-md shadow-sm dark:bg-gray-700 dark:text-gray-300" required>
                             @error('latitude')
                                 <span class="text-sm text-red-600">{{ $message }}</span>
                             @enderror
@@ -101,15 +117,14 @@
 
                         <div class="mb-4">
                             <label for="longitude" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Longitude') }}</label>
-                            <input type="text" name="longitude" id="longitude" class="mt-1 block w-full rounded-md shadow-sm dark:bg-gray-700 dark:text-gray-300" required>
+                            <input type="text" name="longitude" id="longitude" value="{{ old('longitude') }}" class="mt-1 block w-full rounded-md shadow-sm dark:bg-gray-700 dark:text-gray-300" required>
                             @error('longitude')
-                            <span class="text-sm text-red-600">{{ $message }}</span>
-                        @enderror
+                                <span class="text-sm text-red-600">{{ $message }}</span>
+                            @enderror
                         </div>
 
-
                         <div class="flex justify-end">
-                            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700">{{ __('Driver_Save') }}</button>
+                            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700">{{ __('Save Driver') }}</button>
                         </div>
                     </form>
                 </div>

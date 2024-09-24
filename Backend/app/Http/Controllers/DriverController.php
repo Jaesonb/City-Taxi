@@ -18,7 +18,7 @@ class DriverController extends Controller
             return view('drivers.index', compact('drivers'));
         } catch (\Exception $e) {
             Log::error('Error fetching drivers: ' . $e->getMessage());
-            return redirect()->route('drivers')->with('error', 'Error fetching drivers.');
+            return redirect()->route('drivers')->with('error', 'Error fetching drivers: ' . $e->getMessage());
         }
     }
 
@@ -35,14 +35,13 @@ class DriverController extends Controller
                 'email' => 'required|string|email|max:255|unique:drivers',
                 'password' => 'required|string|min:8|confirmed',
                 'phone_number' => 'required|string|max:20',
-                'vehicle_number'=> 'required|string|max:20',
-                'status' => 'required|string|max:255|(available,busy)',
-                'color' => 'required|string|max:255|',
-                'model' => 'required|string|max:255|',
-                'brand' => 'required|string|max:255|',
-                'latitude' => 'required|string|max:255|map:location',
-                'longitude' => 'required|string|max:255|map:location'
-                
+                'vehicle_number' => 'required|string|max:20',
+                'status' => 'required|string|in:available,busy',
+                'color' => 'required|string|max:255',
+                'model' => 'required|string|max:255',
+                'brand' => 'required|string|max:255',
+                'latitude' => 'required|string|max:255',
+                'longitude' => 'required|string|max:255',
             ]);
 
             Driver::create([
@@ -50,21 +49,18 @@ class DriverController extends Controller
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
                 'phone_number' => $request->phone_number,
-                'status'=> $request->status,
-                'vehicle_number' => $request-> vehicle_number,
-                'model'=> $request->model,
-                'brand'=> $request->brand,
-                'color'=> $request->color,
-                'latitude'=> $request->latitude,
-                'longitude'=> $request->longitude,
+                'status' => $request->status,
+                'vehicle_number' => $request->vehicle_number,
+                'color' => $request->color,
+                'model' => $request->model,
+                'brand' => $request->brand,
+                'latitude' => $request->latitude,
+                'longitude' => $request->longitude,
             ]);
 
             return redirect()->route('drivers')->with('success', 'Driver created successfully.');
         } catch (\Exception $e) {
-            // Log the error message
             Log::error('Error creating driver: ' . $e->getMessage());
-
-            // Redirect back with error message
             return redirect()->back()->with('error', 'Error creating driver: ' . $e->getMessage());
         }
     }
@@ -78,7 +74,7 @@ class DriverController extends Controller
             return redirect()->route('drivers')->with('error', 'Driver not found.');
         } catch (\Exception $e) {
             Log::error('Error fetching driver: ' . $e->getMessage());
-            return redirect()->route('drivers')->with('error', 'Error fetching driver details.');
+            return redirect()->route('drivers')->with('error', 'Error fetching driver details: ' . $e->getMessage());
         }
     }
 
@@ -93,7 +89,7 @@ class DriverController extends Controller
                 'password' => 'nullable|string|min:8|confirmed',
                 'phone_number' => 'required|string|max:20',
                 'vehicle_number'=> 'required|string|max:20',
-                'status' => 'required|string|max:255|(available,busy)',
+                'status' => 'required|string|max:255|in:available,busy',
                 'color' => 'required|string|max:255|',
                 'model' => 'required|string|max:255|',
                 'brand' => 'required|string|max:255|',
@@ -120,14 +116,14 @@ class DriverController extends Controller
             return redirect()->route('drivers')->with('error', 'Driver not found.');
         } catch (\Exception $e) {
             Log::error('Error updating driver: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Error updating driver.');
+            return redirect()->back()->with('error', 'Error updating driver: ' . $e->getMessage());
         }
     }
 
     public function destroy($id)
     {
         try {
-            $driver = Driver($id);
+            $driver = Driver::findOrFail($id);
             $driver->delete();
 
             return redirect()->route('drivers')->with('success', 'Driver deleted successfully.');
@@ -135,10 +131,10 @@ class DriverController extends Controller
             return redirect()->route('drivers')->with('error', 'Driver not found.');
         } catch (\Exception $e) {
             Log::error('Error deleting driver: ' . $e->getMessage());
-            return redirect()->route('drivers')->with('error', 'Error deleting driver.');
+            return redirect()->route('drivers')->with('error', 'Error deleting driver: ' . $e->getMessage());
         }
     }
-    
+
     public function search(Request $request)
     {
         try {
@@ -150,7 +146,7 @@ class DriverController extends Controller
             return view('drivers.index', compact('drivers'));
         } catch (\Exception $e) {
             Log::error('Error searching drivers: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Error searching drivers.');
+            return redirect()->back()->with('error', 'Error searching drivers: ' . $e->getMessage());
         }
     }
 
@@ -165,7 +161,14 @@ class DriverController extends Controller
             return redirect()->route('drivers')->with('error', 'Driver not found.');
         } catch (\Exception $e) {
             Log::error('Error fetching driver trips: ' . $e->getMessage());
-            return redirect()->route('drivers')->with('error', 'Error fetching trips.');
+            return redirect()->route('drivers')->with('error', 'Error fetching trips: ' . $e->getMessage());
         }
-    }   
+    }
+
+    public function showTrips($id)
+    {
+        $driver = Driver::with('trips.payment')->findOrFail($id);
+
+        return view('drivers.trips', compact('driver'));
+    }
 }
