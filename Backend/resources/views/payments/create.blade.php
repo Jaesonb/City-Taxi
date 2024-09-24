@@ -53,9 +53,10 @@
                         <div class="mb-4">
                             <label for="payment_method" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Payment Method') }}</label>
                             <select name="payment_method" id="payment_method" class="mt-1 block w-full rounded-md shadow-sm dark:bg-gray-700 dark:text-gray-300" required>
-                                <option value="cash" {{ old('payment_method') == 'cash' ? 'selected' : '' }}>{{ __('Cash') }}</option>
-                                <option value="card" {{ old('payment_method') == 'card' ? 'selected' : '' }}>{{ __('Card') }}</option>
-                                <option value="online" {{ old('payment_method') == 'online' ? 'selected' : '' }}>{{ __('Online') }}</option>
+                                <option value="CASH" {{ old('payment_method') == 'CASH' ? 'selected' : '' }}>{{ __('Cash') }}</option>
+                                <option value="CREDIT_CARD" {{ old('payment_method') == 'CREDIT_CARD' ? 'selected' : '' }}>{{ __('Credit Card') }}</option>
+                                <option value="DEBIT_CARD" {{ old('payment_method') == 'DEBIT_CARD' ? 'selected' : '' }}>{{ __('Debit Card') }}</option>
+                                <option value="ONLINE" {{ old('payment_method') == 'ONLINE' ? 'selected' : '' }}>{{ __('Online') }}</option>
                             </select>
                             @error('payment_method')
                                 <span class="text-sm text-red-600">{{ $message }}</span>

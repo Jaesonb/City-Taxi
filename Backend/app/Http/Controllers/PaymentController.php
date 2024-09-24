@@ -34,8 +34,8 @@ class PaymentController extends Controller
             $request->validate([
                 'trip_id' => 'required|string|max:255',
                 'amount'=> 'required|string|max:255',
-                'payment_method'=> 'required|string|max:255|in:cash,card,online',
-                'payment_status'=> 'required|string|max:255|in:pending,paid,failed',
+                'payment_method'=> 'required|string|max:255|in:CASH,CREDIT_CARD,DEBIT_CARD,ONLINE',
+                'payment_status'=> 'required|string|max:255|in:PENDING,PAID,FAILED',
             ]);
 
             Payment::create([
@@ -89,8 +89,8 @@ class PaymentController extends Controller
             $request->validate([
                 'trip_id' => 'required|string|max:255'.$payment->id,
                 'amount'=> 'required|string|max:255',
-                'payment_method'=> 'required|string|max:255|in:cash,card,online',
-                'payment_status'=> 'required|string|max:255|in:pending,paid,failed',
+                'payment_method'=> 'required|string|max:255|in:CASH,CREDIT_CARD,DEBIT_CARD,ONLINE',
+                'payment_status'=> 'required|string|max:255|in:PENDING,PAID,FAILED',
             ]);
 
             $payment->update([

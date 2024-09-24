@@ -35,6 +35,9 @@
                             </p>
                         </div>
 
+                        {{-- Hidden Trip ID Field --}}
+                        <input type="hidden" name="trip_id" value="{{ $payment->trip->id }}">
+
                         {{-- Amount Field (Read-Only) --}}
                         <div class="mb-4">
                             <label for="amount" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Amount (Fare)') }}</label>
@@ -44,7 +47,15 @@
                         {{-- Payment Method (Read-Only) --}}
                         <div class="mb-4">
                             <label for="payment_method" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Payment Method') }}</label>
-                            <input type="text" name="payment_method" id="payment_method" value="{{ ucfirst($payment->payment_method) }}" class="mt-1 block w-full rounded-md shadow-sm dark:bg-gray-700 dark:text-gray-300" readonly>
+                            <select name="payment_method" id="payment_method" class="mt-1 block w-full rounded-md shadow-sm dark:bg-gray-700 dark:text-gray-300">
+                                <option value="CASH" {{ $payment->payment_method == 'CASH' ? 'selected' : '' }}>{{ __('Cash') }}</option>
+                                <option value="CREDIT_CARD" {{ $payment->payment_method == 'CREDIT_CARD' ? 'selected' : '' }}>{{ __('Credit Card') }}</option>
+                                <option value="DEBIT_CARD" {{ $payment->payment_method == 'DEBIT_CARD' ? 'selected' : '' }}>{{ __('Debit Card') }}</option>
+                                <option value="ONLINE" {{ $payment->payment_method == 'ONLINE' ? 'selected' : '' }}>{{ __('Online') }}</option>
+                            </select>
+                            @error('payment_method')
+                                <span class="text-sm text-red-600">{{ $message }}</span>
+                            @enderror
                         </div>
 
                         {{-- Payment Status (Editable) --}}

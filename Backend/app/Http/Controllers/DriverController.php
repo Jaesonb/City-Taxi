@@ -78,6 +78,18 @@ class DriverController extends Controller
         }
     }
 
+    public function edit($id)
+    {
+        try {
+            $driver = Driver::findOrFail($id);
+            return view('drivers.edit', compact('driver'));
+        } catch (ModelNotFoundException $e) {
+            return redirect()->route('drivers')->with('error', 'Driver not found.');
+        } catch (\Exception $e) {
+            Log::error('Error fetching driver for edit: ' . $e->getMessage());
+            return redirect()->route('drivers')->with('error', 'Error fetching driver for edit: ' . $e->getMessage());
+        }
+    }
     public function update(Request $request, $id)
     {
         try {
@@ -93,8 +105,8 @@ class DriverController extends Controller
                 'color' => 'required|string|max:255|',
                 'model' => 'required|string|max:255|',
                 'brand' => 'required|string|max:255|',
-                'latitude' => 'required|string|max:255|map:location',
-                'longitude' => 'required|string|max:255|map:location'
+                'latitude' => 'required|string|max:255',
+                'longitude' => 'required|string|max:255',
             ]);
 
             $driver->update([
