@@ -1,119 +1,142 @@
-const host = "https://example.com/"; // Replace with your actual API host
+// Base URL for the API
+const apiBaseUrl = 'http://localhost:8000/api';
 
-// Driver Registration
-document.getElementById('driverRegisterForm').addEventListener('submit', async function(event) {
-    event.preventDefault();
-    const name = document.getElementById('driverName').value;
-    const email = document.getElementById('driverEmail').value;
-    const phoneNumber = document.getElementById('driverPhone').value;
-    const password = document.getElementById('driverPassword').value;
-    const vehicleNumber = document.getElementById('vehicleNumber').value;
-    const model = document.getElementById('driverModel').value;
-    const brand = document.getElementById('driverBrand').value;
-    const color = document.getElementById('driverColor').value;
-    const latitude = document.getElementById('driverLatitude').value;
-    const longitude = document.getElementById('driverLongitude').value;
+// Handle redirections from the main page
+document.addEventListener("DOMContentLoaded", function () {
 
-    const response = await fetch(`${host}api/drivers/register`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            name,
-            email,
-            phone_number: phoneNumber,
-            password,
-            vehicle_number: vehicleNumber,
-            model,
-            brand,
-            color,
-            latitude,
-            longitude
-        }),
-    });
+    // Event listeners for main page buttons
+    const driverBtn = document.getElementById('driverBtn');
+    const passengerBtn = document.getElementById('passengerBtn');
 
-    const data = await response.json();
-    if (response.ok) {
-        alert('Driver Registration Successful!');
-        // Optionally redirect or clear the form
-    } else {
-        alert(data.message || 'Driver Registration Failed!');
+    // Redirect to driver page
+    if (driverBtn) {
+        driverBtn.addEventListener('click', () => {
+            window.location.href = 'driver.html';
+        });
     }
-});
 
-// Driver Login
-document.getElementById('driverLoginForm').addEventListener('submit', async function(event) {
-    event.preventDefault();
-    const email = document.getElementById('driverLoginEmail').value;
-    const password = document.getElementById('driverLoginPassword').value;
-
-    const response = await fetch(`${host}api/drivers/login`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-    });
-
-    const data = await response.json();
-    if (response.ok) {
-        alert('Driver Login Successful!');
-        // Handle successful login, such as redirecting or storing tokens
-    } else {
-        alert(data.message || 'Driver Login Failed!');
+    // Redirect to passenger page
+    if (passengerBtn) {
+        passengerBtn.addEventListener('click', () => {
+            window.location.href = 'passenger.html';
+        });
     }
-});
 
-// Passenger Registration
-document.getElementById('passengerRegisterForm').addEventListener('submit', async function(event) {
-    event.preventDefault();
-    const name = document.getElementById('passengerName').value;
-    const email = document.getElementById('passengerEmail').value;
-    const phoneNumber = document.getElementById('passengerPhone').value;
-    const password = document.getElementById('passengerPassword').value;
+    // Handle driver page buttons
+    const driverLoginBtn = document.getElementById('driverLoginBtn');
+    const driverRegisterBtn = document.getElementById('driverRegisterBtn');
 
-    const response = await fetch(`${host}api/passengers/register`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            name,
-            email,
-            phone_number: phoneNumber,
-            password
-        }),
-    });
-
-    const data = await response.json();
-    if (response.ok) {
-        alert('Passenger Registration Successful!');
-        // Optionally redirect or clear the form
-    } else {
-        alert(data.message || 'Passenger Registration Failed!');
+    if (driverLoginBtn) {
+        driverLoginBtn.addEventListener('click', () => {
+            window.location.href = 'login.html?type=driver';
+        });
     }
-});
 
-// Passenger Login
-document.getElementById('passengerLoginForm').addEventListener('submit', async function(event) {
-    event.preventDefault();
-    const email = document.getElementById('passengerLoginEmail').value;
-    const password = document.getElementById('passengerLoginPassword').value;
+    if (driverRegisterBtn) {
+        driverRegisterBtn.addEventListener('click', () => {
+            window.location.href = 'driver-register.html?type=driver';
+        });
+    }
 
-    const response = await fetch(`${host}api/passengers/login`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-    });
+    // Handle passenger page buttons
+    const passengerLoginBtn = document.getElementById('passengerLoginBtn');
+    const passengerRegisterBtn = document.getElementById('passengerRegisterBtn');
 
-    const data = await response.json();
-    if (response.ok) {
-        alert('Passenger Login Successful!');
-        // Handle successful login, such as redirecting or storing tokens
-    } else {
-        alert(data.message || 'Passenger Login Failed!');
+    if (passengerLoginBtn) {
+        passengerLoginBtn.addEventListener('click', () => {
+            window.location.href = 'login.html?type=passenger';
+        });
+    }
+
+    if (passengerRegisterBtn) {
+        passengerRegisterBtn.addEventListener('click', () => {
+            window.location.href = 'passenger-register.html?type=passenger';
+        });
+    }
+
+    // Handle Passenger Registration Form
+    const passengerRegisterForm = document.getElementById('passengerRegisterForm');
+    if (passengerRegisterForm) {
+        passengerRegisterForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            // Collect Passenger Form Data
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const phoneNumber = document.getElementById('phone_number').value;
+
+            const payload  = {
+                name: name,
+                email: email,
+                password: password,
+                phone_number: phoneNumber
+            };
+
+            // POST request to Passenger Register API
+            fetch(`${"http://localhost:8000/api"}/passengers/register`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Redirect to login after successful registration
+                    window.location.href = 'login.html?type=passenger';
+                } else {
+                    alert('Registration failed: ' + data.message);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    }
+
+    // Handle Driver Registration Form
+    const driverRegisterForm = document.getElementById('driverRegisterForm');
+    if (driverRegisterForm) {
+        driverRegisterForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            // Collect Driver Form Data
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const phoneNumber = document.getElementById('phone_number').value;
+            const vehicleNumber = document.getElementById('vehicle_number').value;
+            const model = document.getElementById('model').value;
+            const brand = document.getElementById('brand').value;
+            const color = document.getElementById('color').value;
+
+            const requestBody = {
+                name: name,
+                email: email,
+                password: password,
+                phone_number: phoneNumber,
+                vehicle_number: vehicleNumber,
+                model: model,
+                brand: brand,
+                color: color
+            };
+
+            // POST request to Driver Register API
+            fetch(`${"http://localhost:8000/api"}/drivers/register`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestBody)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Redirect to login after successful registration
+                    window.location.href = 'login.html?type=driver';
+                } else {
+                    alert(data.message || 'Driver registration failed!');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
     }
 });
