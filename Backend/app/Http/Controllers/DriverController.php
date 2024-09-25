@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Driver; // Using Driver Model
+use App\Models\Trip;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -182,5 +183,23 @@ class DriverController extends Controller
         $driver = Driver::with('trips.payment')->findOrFail($id);
 
         return view('drivers.trips', compact('driver'));
+    }
+
+    public function acceptTrip($id)
+    {
+        $trip = Trip::findOrFail($id);
+        $trip->status = 'CONFIRMED';
+        $trip->save();
+
+        return redirect()->route('dashboard')->with('success', 'Trip accepted successfully.');
+    }
+
+    public function declineTrip($id)
+    {
+        $trip = Trip::findOrFail($id);
+        $trip->status = 'CANCELLED';
+        $trip->save();
+
+        return redirect()->route('dashboard')->with('success', 'Trip declined successfully.');
     }
 }

@@ -2,17 +2,23 @@
 
 namespace App\Models;
 
+use App\Mail\TripCreated;
+use App\Mail\TripStatusUpdated;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Mail;
 
 class Trip extends Model
 {
     use HasFactory;
 
+    const STATUS_PENDING = 'pending';
+    const STATUS_ACCEPTED = 'accepted';
+    const STATUS_DECLINED = 'declined';
+
     protected $fillable = [
         'passenger_id',
         'driver_id',
-        'vehicle_id',
         'pickup_location',
         'pickup_latitude',
         'pickup_longitude',
@@ -95,9 +101,21 @@ class Trip extends Model
             $trip->fare = $trip->calculateFare();
         });
 
+        // After the trip is created, send the email with the trip details
+        static::created(function ($trip) {
+            Mail::to($trip->driver->email)->send(new TripCreated($trip));
+        });
+
         // When updating an existing trip, calculate and set the fare
         static::updating(function ($trip) {
             $trip->fare = $trip->calculateFare();
+        });
+
+        // After updating the trip, notify the passenger
+        static::updated(function ($trip) {
+            if ($trip->isDirty('status')) { // Only send email if status has changed
+                Mail::to($trip->passenger->email)->send(new TripStatusUpdated($trip));
+            }
         });
     }
 }

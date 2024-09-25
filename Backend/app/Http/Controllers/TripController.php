@@ -47,7 +47,6 @@ class TripController extends Controller
                 'dropoff_latitude' => 'required|numeric',
                 'dropoff_longitude' => 'required|numeric',
                 'pickup_time' => 'required|date',
-                'status' => 'required|in:PENDING,CONFIRMED,CANCELLED,COMPLETED',
             ]);
 
             Trip::create($request->all());
@@ -106,7 +105,7 @@ class TripController extends Controller
                 'dropoff_longitude' => 'required|numeric',
                 'pickup_time' => 'required|date',
                 'dropoff_time' => 'required|date',
-                'status' => 'required|in:PENDING,CONFIRMED,CANCELLED,COMPLETED',
+                'status' => 'nullable|in:PENDING,CONFIRMED,CANCELLED,COMPLETED',
             ]);
 
             $trip->update($request->all());
