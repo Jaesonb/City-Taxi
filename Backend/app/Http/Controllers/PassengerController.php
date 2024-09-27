@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\PassengerCreated;
 use App\Models\Passenger; // Using Passenger model
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Mail;
 
 class PassengerController extends Controller
 {
@@ -36,13 +38,19 @@ class PassengerController extends Controller
                 'phone_number' => 'required|string|max:20',
             ]);
 
-            Passenger::create([
+            $plainPassword = $request->password;
+
+            $passenger = Passenger::create([
                 'name' => $request->name,
                 'email' => $request->email,
-                'password' => Hash::make($request->password),
+                'password' => Hash::make($plainPassword),
                 'phone_number' => $request->phone_number,
             ]);
 
+            // Send email with plain password
+            Mail::to($passenger->email)->send(new PassengerCreated($passenger, $plainPassword));
+
+            // Redirect with success message
             return redirect()->route('passengers')->with('success', 'Passenger created successfully.');
         } catch (\Exception $e) {
             // Log the error message
@@ -95,7 +103,7 @@ class PassengerController extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
                 'phone_number' => $request->phone_number,
-                'password' => $request->password ? Hash::make($request->password) : $passenger->password,
+                'password' => $request->password ? $request->password : $passenger->password,
             ]);
 
             return redirect()->route('passengers')->with('success', 'Passenger updated successfully.');

@@ -62,7 +62,7 @@
                         </div>
 
                         <div class="flex justify-end">
-                            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700">{{ __('Passenger_Save') }}</button>
+                            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700">{{ __('Save Passenger') }}</button>
                         </div>
                     </form>
                 </div>

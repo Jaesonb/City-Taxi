@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\DriverCreated;
 use Illuminate\Http\Request;
 use App\Models\Driver; // Using Driver Model
 use App\Models\Trip;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-
+use Illuminate\Support\Facades\Mail;
 
 class DriverController extends Controller
 {
@@ -45,10 +46,12 @@ class DriverController extends Controller
                 'longitude' => 'required|string|max:255',
             ]);
 
-            Driver::create([
+            $plainPassword = $request->password;
+
+            $driver = Driver::create([
                 'name' => $request->name,
                 'email' => $request->email,
-                'password' => Hash::make($request->password),
+                'password' => Hash::make($plainPassword),
                 'phone_number' => $request->phone_number,
                 'status' => $request->status,
                 'vehicle_number' => $request->vehicle_number,
@@ -58,6 +61,9 @@ class DriverController extends Controller
                 'latitude' => $request->latitude,
                 'longitude' => $request->longitude,
             ]);
+
+            // Send email with plain password
+            Mail::to($driver->email)->send(new DriverCreated($driver, $plainPassword));
 
             return redirect()->route('drivers')->with('success', 'Driver created successfully.');
         } catch (\Exception $e) {
