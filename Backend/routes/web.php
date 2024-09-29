@@ -21,6 +21,8 @@ Route::get('/driver', [TransportController::class, 'driver'])->name('transport.d
 Route::get('/passenger', [TransportController::class, 'passenger'])->name('transport.passenger');
 Route::get('/driver-register', [TransportController::class, 'driverRegister'])->name('transport.driver-register');
 Route::get('/passenger-register', [TransportController::class, 'passengerRegister'])->name('transport.passenger-register');
+Route::get('/ride-request', [TransportController::class, 'rideRequest'])->name('transport.ride-request');
+
 
 // Dashboard route (requires authentication)
 Route::get('/dashboard', function () {
@@ -76,4 +78,4 @@ Route::middleware('auth')->group(function () {
     Route::get('/trips/getFare/{trip}', [TripController::class, 'getFare'])->name('trips.getFare');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
