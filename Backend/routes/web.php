@@ -11,21 +11,23 @@ use Illuminate\Support\Facades\Route;
 
 
 // Root route should serve the index.blade.php view
-Route::get('/transport', function () {
+Route::get('/', function () {
     return view('transport.index'); // This will serve the index.blade.php from resources/views/transport/
 })->name('transport.index');
 
+Route::get('/admin', function () {
+    return redirect('/login');
+});
 
 // Public routes for Transport system (no authentication required)
 Route::get('/driver', [TransportController::class, 'driver'])->name('transport.driver');
 Route::get('/passenger', [TransportController::class, 'passenger'])->name('transport.passenger');
 Route::get('/driver-register', [TransportController::class, 'driverRegister'])->name('transport.driver-register');
 Route::get('/passenger-register', [TransportController::class, 'passengerRegister'])->name('transport.passenger-register');
+Route::post('/passenger/register', [TransportController::class, 'storePassenger'])->name('passenger.register');
+Route::post('/driver/register', [TransportController::class, 'storeDriver'])->name('driver.register');
 
-// Dashboard route (requires authentication)
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

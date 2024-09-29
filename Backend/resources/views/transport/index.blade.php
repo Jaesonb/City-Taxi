@@ -22,9 +22,15 @@
             </div>
             <button id="loginSubmit" class="btn btn-primary w-100">Login</button>
         </form>
-    </div>
-    <!-- <script src="{{ asset('public/transport/script.js') }}"></script> -->
 
+        <div class="mt-4 text-center">
+            <p>Don't have an account? Register below:</p>
+            <a href="{{ route('transport.driver-register') }}" class="btn btn-secondary me-2">Driver Register</a>
+            <a href="{{ route('transport.passenger-register') }}" class="btn btn-secondary">Passenger Register</a>
+        </div>
+    </div>
+
+    <!-- <script src="{{ asset('public/transport/script.js') }}"></script> -->
     <!-- <script src="script.js"></script> -->
 </body>
 

@@ -44,7 +44,7 @@ class DriverCreated extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.passenger_created',
+            view: 'emails.driver_created',
         );
     }
 
