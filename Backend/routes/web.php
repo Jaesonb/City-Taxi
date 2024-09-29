@@ -6,6 +6,7 @@ use App\Http\Controllers\DriverController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TransportController;
+use App\Http\Controllers\TripController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -16,7 +17,6 @@ Route::get('/transport', function () {
 
 
 // Public routes for Transport system (no authentication required)
-Route::get('/login', [TransportController::class, 'login'])->name('transport.login');
 Route::get('/driver', [TransportController::class, 'driver'])->name('transport.driver');
 Route::get('/passenger', [TransportController::class, 'passenger'])->name('transport.passenger');
 Route::get('/driver-register', [TransportController::class, 'driverRegister'])->name('transport.driver-register');
@@ -27,14 +27,11 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-// Routes that require authentication
 Route::middleware('auth')->group(function () {
-    // Profile routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Passenger management routes
     Route::get('/passengers', [PassengerController::class, 'index'])->name('passengers');
     Route::get('/passengers/create', [PassengerController::class, 'create'])->name('passengers.create');
     Route::post('/passengers', [PassengerController::class, 'store'])->name('passengers.store');
@@ -55,7 +52,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/driver/accept-trip/{id}', [DriverController::class, 'acceptTrip'])->name('drivers.accept_trip');
     Route::get('/driver/decline-trip/{id}', [DriverController::class, 'declineTrip'])->name('drivers.decline_trip');
 
-    Route::get('/payments', [PaymentController::class, 'index'])->name('payments');
+    Route::get('/paymentts', [PaymentController::class, 'index'])->name('payments');
     Route::get('/payments/create', [PaymentController::class, 'create'])->name('payments.create');
     Route::post('/payments', [PaymentController::class, 'store'])->name('payments.store');
     Route::get('/payments/{id}', [PaymentController::class, 'show'])->name('payments.show');
@@ -79,5 +76,4 @@ Route::middleware('auth')->group(function () {
     Route::get('/trips/getFare/{trip}', [TripController::class, 'getFare'])->name('trips.getFare');
 });
 
-require __DIR__ . '/auth.php';
-
+require __DIR__.'/auth.php';
