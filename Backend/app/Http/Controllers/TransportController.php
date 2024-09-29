@@ -15,7 +15,7 @@ class TransportController extends Controller
     // Serve the login page
     public function login()
     {
-        return view('transport.transport.index');
+        return view('transport.index');
     }
 
     // Serve the driver page
