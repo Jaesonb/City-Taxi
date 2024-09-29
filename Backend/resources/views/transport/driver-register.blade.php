@@ -143,6 +143,8 @@
 
     <!-- Leaflet JS for map -->
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <!-- Custom JS -->
+    {{-- <script src="{{ asset('public/transport/script.js') }}"></script> --}}
 
     <!-- Map Initialization Script -->
     <script>

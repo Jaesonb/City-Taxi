@@ -15,7 +15,7 @@ class TransportController extends Controller
     // Serve the login page
     public function login()
     {
-        return view('transport.login');
+        return view('transport.transport.index');
     }
 
     // Serve the driver page
@@ -40,6 +40,13 @@ class TransportController extends Controller
     public function passengerRegister()
     {
         return view('transport.passenger-register');
+    }
+
+
+    // Serve the passenger registration page
+    public function rideRequest()
+    {
+        return view('transport.ride-request');
     }
 
      // Store function for Driver registration
