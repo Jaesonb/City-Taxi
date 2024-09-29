@@ -1,15 +1,15 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Passengers') }}
+            {{ __('Trips') }}
         </h2>
     </x-slot>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="mb-4 flex justify-end">
-                <a href="{{ route('passengers.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    {{ __('Create Passenger') }}
+                <a href="{{ route('trips.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    {{ __('Create Trip') }}
                 </a>
             </div>
 
@@ -31,13 +31,16 @@
                         <thead>
                             <tr>
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                    {{ __('Name') }}
+                                    {{ __('Trip ID') }}
                                 </th>
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                    {{ __('Email') }}
+                                    {{ __('Start Location') }}
                                 </th>
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                    {{ __('Phone Number') }}
+                                    {{ __('End Location') }}
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                    {{ __('Status') }}
                                 </th>
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                     {{ __('Actions') }}
@@ -45,42 +48,40 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700">
-                            @forelse($passengers as $passenger)
+                            @forelse($trips as $trip)
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-200">
-                                        {{ $passenger->name }}
+                                        {{ $trip->id }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
-                                        {{ $passenger->email }}
+                                        {{ $trip->pickup_location }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
-                                        {{ $passenger->phone_number ?? 'N/A' }}
+                                        {{ $trip->dropoff_location }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
+                                        {{ $trip->status }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                         <div class="flex">
-                                            <a href="{{ route('passengers.edit', $passenger->id) }}" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300">
+                                            <a href="{{ route('trips.edit', $trip->id) }}" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300">
                                                 {{ __('Edit') }}
                                             </a>
 
-                                            <form action="{{ route('passengers.destroy', $passenger->id) }}" method="POST" class="delete-passenger-form" style="margin-left: 20px;">
+                                            <form action="{{ route('trips.destroy', $trip->id) }}" method="POST" class="delete-trip-form" style="margin-left: 20px;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="button" class="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300 delete-passenger">
+                                                <button type="button" class="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300 delete-trip">
                                                     {{ __('Delete') }}
                                                 </button>
                                             </form>
-
-                                            {{-- Link to View Trips --}}
-                                            <a href="{{ route('passengers.trips', $passenger->id) }}" class="ml-4 text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300">
-                                                {{ __('View Trips') }}
-                                            </a>
                                         </div>
                                     </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="4" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
-                                        {{ __('No passengers found.') }}
+                                    <td colspan="5" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
+                                        {{ __('No trips found.') }}
                                     </td>
                                 </tr>
                             @endforelse
@@ -93,10 +94,10 @@
 
     <!-- SweetAlert Delete Confirmation -->
     <script>
-        document.querySelectorAll('.delete-passenger').forEach(button => {
+        document.querySelectorAll('.delete-trip').forEach(button => {
             button.addEventListener('click', function(e) {
                 e.preventDefault();
-                let form = this.closest('.delete-passenger-form');
+                let form = this.closest('.delete-trip-form');
 
                 Swal.fire({
                     title: 'Are you sure?',

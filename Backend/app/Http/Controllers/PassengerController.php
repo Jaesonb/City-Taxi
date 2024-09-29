@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\PassengerCreated;
 use App\Models\Passenger; // Using Passenger model
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Mail;
 
 class PassengerController extends Controller
 {
@@ -17,7 +19,7 @@ class PassengerController extends Controller
             return view('passengers.index', compact('passengers'));
         } catch (\Exception $e) {
             Log::error('Error fetching passengers: ' . $e->getMessage());
-            return redirect()->route('passengers')->with('error', 'Error fetching passengers.');
+            return redirect()->route('passengers')->with('error', 'Error fetching passengers: ' . $e->getMessage());
         }
     }
 
@@ -33,16 +35,22 @@ class PassengerController extends Controller
                 'name' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255|unique:passengers',
                 'password' => 'required|string|min:8|confirmed',
-                'phone_number' => 'nullable|string|max:20',
+                'phone_number' => 'required|string|max:20',
             ]);
 
-            Passenger::create([
+            $plainPassword = $request->password;
+
+            $passenger = Passenger::create([
                 'name' => $request->name,
                 'email' => $request->email,
-                'password' => Hash::make($request->password),
+                'password' => Hash::make($plainPassword),
                 'phone_number' => $request->phone_number,
             ]);
 
+            // Send email with plain password
+            Mail::to($passenger->email)->send(new PassengerCreated($passenger, $plainPassword));
+
+            // Redirect with success message
             return redirect()->route('passengers')->with('success', 'Passenger created successfully.');
         } catch (\Exception $e) {
             // Log the error message
@@ -62,7 +70,7 @@ class PassengerController extends Controller
             return redirect()->route('passengers')->with('error', 'Passenger not found.');
         } catch (\Exception $e) {
             Log::error('Error fetching passenger: ' . $e->getMessage());
-            return redirect()->route('passengers')->with('error', 'Error fetching passenger details.');
+            return redirect()->route('passengers')->with('error', 'Error fetching passenger details: ' . $e->getMessage());
         }
     }
 
@@ -75,7 +83,7 @@ class PassengerController extends Controller
             return redirect()->route('passengers')->with('error', 'Passenger not found.');
         } catch (\Exception $e) {
             Log::error('Error fetching passenger for edit: ' . $e->getMessage());
-            return redirect()->route('passengers')->with('error', 'Error fetching passenger for edit.');
+            return redirect()->route('passengers')->with('error', 'Error fetching passenger for edit: ' . $e->getMessage());
         }
     }
 
@@ -95,7 +103,7 @@ class PassengerController extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
                 'phone_number' => $request->phone_number,
-                'password' => $request->password ? Hash::make($request->password) : $passenger->password,
+                'password' => $request->password ? $request->password : $passenger->password,
             ]);
 
             return redirect()->route('passengers')->with('success', 'Passenger updated successfully.');
@@ -103,7 +111,7 @@ class PassengerController extends Controller
             return redirect()->route('passengers')->with('error', 'Passenger not found.');
         } catch (\Exception $e) {
             Log::error('Error updating passenger: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Error updating passenger.');
+            return redirect()->back()->with('error', 'Error updating passenger: ' . $e->getMessage());
         }
     }
 
@@ -118,7 +126,7 @@ class PassengerController extends Controller
             return redirect()->route('passengers')->with('error', 'Passenger not found.');
         } catch (\Exception $e) {
             Log::error('Error deleting passenger: ' . $e->getMessage());
-            return redirect()->route('passengers')->with('error', 'Error deleting passenger.');
+            return redirect()->route('passengers')->with('error', 'Error deleting passenger: ' . $e->getMessage());
         }
     }
 
@@ -133,7 +141,7 @@ class PassengerController extends Controller
             return view('passengers.index', compact('passengers'));
         } catch (\Exception $e) {
             Log::error('Error searching passengers: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Error searching passengers.');
+            return redirect()->back()->with('error', 'Error searching passengers: ' . $e->getMessage());
         }
     }
 
@@ -148,7 +156,14 @@ class PassengerController extends Controller
             return redirect()->route('passengers')->with('error', 'Passenger not found.');
         } catch (\Exception $e) {
             Log::error('Error fetching passenger trips: ' . $e->getMessage());
-            return redirect()->route('passengers')->with('error', 'Error fetching trips.');
+            return redirect()->route('passengers')->with('error', 'Error fetching trips: ' . $e->getMessage());
         }
+    }
+
+    public function showTrips($id)
+    {
+        $passenger = Passenger::with('trips.payment')->findOrFail($id);
+
+        return view('passengers.trips', compact('passenger'));
     }
 }
