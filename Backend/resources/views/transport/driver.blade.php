@@ -20,7 +20,7 @@
             </div>
         </div>
     </div>
-    <script src="{{ asset('public/transport/script.js') }}"></script>
+    {{-- <script src="{{ asset('public/transport/script.js') }}"></script> --}}
 
     <!-- <script src="script.js"></script> -->
 </body>
