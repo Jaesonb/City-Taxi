@@ -6,16 +6,8 @@ use App\Http\Controllers\DriverController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TransportController;
-use App\Http\Controllers\TripController;
 use Illuminate\Support\Facades\Route;
 
-// Route::get('/', function () {
-//     return view('auth/login');
-// });
-
-Route::get('/dashboard', [DashboardController::class, 'index'])
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
 
 // Root route should serve the index.blade.php view
 Route::get('/transport', function () {
