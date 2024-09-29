@@ -5,16 +5,29 @@ use App\Http\Controllers\PassengerController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TransportController;
 use App\Http\Controllers\TripController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('auth/login');
-});
 
-Route::get('/dashboard', [DashboardController::class, 'index'])
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+// Root route should serve the index.blade.php view
+Route::get('/transport', function () {
+    return view('transport.index'); // This will serve the index.blade.php from resources/views/transport/
+})->name('transport.index');
+
+
+// Public routes for Transport system (no authentication required)
+Route::get('/driver', [TransportController::class, 'driver'])->name('transport.driver');
+Route::get('/passenger', [TransportController::class, 'passenger'])->name('transport.passenger');
+Route::get('/driver-register', [TransportController::class, 'driverRegister'])->name('transport.driver-register');
+Route::get('/passenger-register', [TransportController::class, 'passengerRegister'])->name('transport.passenger-register');
+Route::get('/ride-request', [TransportController::class, 'rideRequest'])->name('transport.ride-request');
+
+
+// Dashboard route (requires authentication)
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -65,4 +78,4 @@ Route::middleware('auth')->group(function () {
     Route::get('/trips/getFare/{trip}', [TripController::class, 'getFare'])->name('trips.getFare');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

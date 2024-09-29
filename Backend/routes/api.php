@@ -11,8 +11,10 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
+// Unauthenticated Routes
 Route::post('/passengers/register', [PassengerApiController::class, 'register']);
 Route::post('/passengers/login', [PassengerApiController::class, 'login']);
+
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/passengers/logout', [PassengerApiController::class, 'logout']);
@@ -21,6 +23,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/passengers', [PassengerApiController::class, 'destroy']);
 });
 
+// Unauthenticated Routes
 Route::post('/drivers/register', [DriverApiController::class, 'register']);
 Route::post('/drivers/login', [DriverApiController::class, 'login']);
 
@@ -46,6 +49,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/trips', [TripApiController::class, 'store']);
     Route::get('/trips/trip', [TripApiController::class, 'show']);
     Route::put('/trips', [TripApiController::class, 'update']);
-    Route::delete('/trips', [TripApiController::class, 'destroy']);
     Route::get('/trips/search', [TripApiController::class, 'index']);
+    Route::delete('/trips', [TripApiController::class, 'destroy']);
 });
