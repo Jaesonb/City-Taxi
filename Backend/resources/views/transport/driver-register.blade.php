@@ -1,6 +1,7 @@
 <!-- driver-register.html -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,6 +19,7 @@
             background-color: #f8f9fa;
             font-family: Arial, sans-serif;
         }
+
         .form-container {
             margin-top: 50px;
             max-width: 600px;
@@ -26,12 +28,14 @@
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
         }
+
         h2 {
             text-align: center;
             margin-bottom: 30px;
         }
     </style>
 </head>
+
 <body>
 
     <div class="container">
@@ -50,27 +54,33 @@
                         </div>
                         <div class="form-group mb-3">
                             <label for="password" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="password" placeholder="Enter your password" required>
+                            <input type="password" class="form-control" id="password" placeholder="Enter your password"
+                                required>
                         </div>
                         <div class="form-group mb-3">
                             <label for="phone_number" class="form-label">Phone Number</label>
-                            <input type="text" class="form-control" id="phone_number" placeholder="Enter your phone number" required>
+                            <input type="text" class="form-control" id="phone_number"
+                                placeholder="Enter your phone number" required>
                         </div>
                         <div class="form-group mb-3">
                             <label for="vehicle_number" class="form-label">Vehicle Number</label>
-                            <input type="text" class="form-control" id="vehicle_number" placeholder="Enter your vehicle number" required>
+                            <input type="text" class="form-control" id="vehicle_number"
+                                placeholder="Enter your vehicle number" required>
                         </div>
                         <div class="form-group mb-3">
                             <label for="model" class="form-label">Vehicle Model</label>
-                            <input type="text" class="form-control" id="model" placeholder="Enter vehicle model" required>
+                            <input type="text" class="form-control" id="model" placeholder="Enter vehicle model"
+                                required>
                         </div>
                         <div class="form-group mb-3">
                             <label for="brand" class="form-label">Vehicle Brand</label>
-                            <input type="text" class="form-control" id="brand" placeholder="Enter vehicle brand" required>
+                            <input type="text" class="form-control" id="brand" placeholder="Enter vehicle brand"
+                                required>
                         </div>
                         <div class="form-group mb-3">
                             <label for="color" class="form-label">Vehicle Color</label>
-                            <input type="text" class="form-control" id="color" placeholder="Enter vehicle color" required>
+                            <input type="text" class="form-control" id="color" placeholder="Enter vehicle color"
+                                required>
                         </div>
                         <button type="submit" class="btn btn-success w-100">Register as Driver</button>
                     </form>
@@ -83,7 +93,10 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- Custom JS -->
-    <script src="script.js"></script>
+    <script src="{{ asset('public/transport/script.js') }}"></script>
+
+    <!-- <script src="script.js"></script> -->
 
 </body>
+
 </html>
