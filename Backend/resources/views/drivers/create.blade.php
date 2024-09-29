@@ -109,7 +109,7 @@
 
                         <div class="mb-4">
                             <label for="latitude" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Latitude') }}</label>
-                            <input type="text" name="latitude" id="latitude" value="{{ old('latitude') }}" class="mt-1 block w-full rounded-md shadow-sm dark:bg-gray-700 dark:text-gray-300" required>
+                            <input type="text" name="latitude" id="latitude" value="{{ old('latitude') }}" class="mt-1 block w-full rounded-md shadow-sm dark:bg-gray-700 dark:text-gray-300" required readonly>
                             @error('latitude')
                                 <span class="text-sm text-red-600">{{ $message }}</span>
                             @enderror
@@ -117,10 +117,16 @@
 
                         <div class="mb-4">
                             <label for="longitude" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Longitude') }}</label>
-                            <input type="text" name="longitude" id="longitude" value="{{ old('longitude') }}" class="mt-1 block w-full rounded-md shadow-sm dark:bg-gray-700 dark:text-gray-300" required>
+                            <input type="text" name="longitude" id="longitude" value="{{ old('longitude') }}" class="mt-1 block w-full rounded-md shadow-sm dark:bg-gray-700 dark:text-gray-300" required readonly>
                             @error('longitude')
                                 <span class="text-sm text-red-600">{{ $message }}</span>
                             @enderror
+                        </div>
+
+                        <!-- Map container -->
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Select Location') }}</label>
+                            <div id="map" style="height: 300px;"></div>
                         </div>
 
                         <div class="flex justify-end">
@@ -131,4 +137,43 @@
             </div>
         </div>
     </div>
+
+    <!-- Add Leaflet.js and Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+    <!-- Map Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Initialize map
+            var map = L.map('map').setView([51.505, -0.09], 13); // Default view, adjust as necessary
+
+            // Set up the OSM layer
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            // Create marker variable
+            var marker;
+
+            // Event listener for map click
+            map.on('click', function (e) {
+                // Get coordinates from the click event
+                var lat = e.latlng.lat;
+                var lng = e.latlng.lng;
+
+                // If a marker already exists, remove it
+                if (marker) {
+                    map.removeLayer(marker);
+                }
+
+                // Add marker at the clicked location
+                marker = L.marker([lat, lng]).addTo(map);
+
+                // Set latitude and longitude input values
+                document.getElementById('latitude').value = lat;
+                document.getElementById('longitude').value = lng;
+            });
+        });
+    </script>
 </x-app-layout>
