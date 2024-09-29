@@ -9,9 +9,9 @@ use App\Http\Controllers\TransportController;
 use App\Http\Controllers\TripController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('auth/login');
-});
+// Route::get('/', function () {
+//     return view('auth/login');
+// });
 
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
@@ -63,7 +63,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/driver/accept-trip/{id}', [DriverController::class, 'acceptTrip'])->name('drivers.accept_trip');
     Route::get('/driver/decline-trip/{id}', [DriverController::class, 'declineTrip'])->name('drivers.decline_trip');
 
-    Route::get('/paymentts', [PaymentController::class, 'index'])->name('payments');
+    Route::get('/payments', [PaymentController::class, 'index'])->name('payments');
     Route::get('/payments/create', [PaymentController::class, 'create'])->name('payments.create');
     Route::post('/payments', [PaymentController::class, 'store'])->name('payments.store');
     Route::get('/payments/{id}', [PaymentController::class, 'show'])->name('payments.show');
