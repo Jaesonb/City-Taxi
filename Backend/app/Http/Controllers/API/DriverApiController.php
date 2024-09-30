@@ -114,6 +114,46 @@ class DriverApiController extends Controller
         }
     }
 
+
+    // Method to Fetch Nearby Drivers
+    public function getNearbyDrivers(Request $request)
+    {
+        try {
+            // Validate that the latitude and longitude are provided
+            $request->validate([
+                'latitude' => 'required|numeric',
+                'longitude' => 'required|numeric',
+            ]);
+
+            $passengerLatitude = $request->latitude;
+            $passengerLongitude = $request->longitude;
+
+            // Define a radius (in kilometers) for nearby drivers search
+            $radius = 10; // You can change the radius as per your requirement
+
+            // Fetch drivers using the haversine formula to calculate distance
+            $drivers = Driver::select('name', 'email', 'phone_number', 'status', 'vehicle_number', 'model', 'brand', 'color', 'latitude', 'longitude')
+                ->where('status', 'AVAILABLE') // Fetch only available drivers
+                ->selectRaw("( 6371 * acos( cos( radians(?) ) *
+                          cos( radians( latitude ) ) *
+                          cos( radians( longitude ) - radians(?) ) +
+                          sin( radians(?) ) *
+                          sin( radians( latitude ) ) ) ) AS distance",
+                    [$passengerLatitude, $passengerLongitude, $passengerLatitude]
+                )
+                ->having('distance', '<', $radius)
+                ->orderBy('distance')
+                ->get();
+
+            // Return the list of drivers
+            return response()->json($drivers, 200);
+        } catch (\Exception $e) {
+            Log::error('Error fetching nearby drivers: ' . $e->getMessage());
+            return response()->json(['error' => 'Error fetching nearby drivers: ' . $e->getMessage()], 500);
+        }
+    }
+
+
     // Update driver information
     public function update(Request $request)
     {

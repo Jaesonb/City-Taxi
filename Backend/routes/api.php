@@ -32,6 +32,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/drivers', [DriverApiController::class, 'show']);
     Route::put('/drivers', [DriverApiController::class, 'update']);
     Route::delete('/drivers', [DriverApiController::class, 'destroy']);
+    Route::get('/drivers/nearby', [DriverApiController::class, 'getNearbyDrivers']); //Route for Fetching Nearby Drivers
+
 });
 
 Route::middleware('auth:sanctum')->group(function () {

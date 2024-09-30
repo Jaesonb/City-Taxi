@@ -24,13 +24,23 @@ Route::get('/driver', [TransportController::class, 'driver'])->name('transport.d
 Route::get('/passenger', [TransportController::class, 'passenger'])->name('transport.passenger');
 Route::get('/driver-register', [TransportController::class, 'driverRegister'])->name('transport.driver-register');
 Route::get('/passenger-register', [TransportController::class, 'passengerRegister'])->name('transport.passenger-register');
-Route::get('/ride-request', [TransportController::class, 'rideRequest'])->name('transport.ride-request');
+
 
 Route::post('/passenger/register', [TransportController::class, 'storePassenger'])->name('passenger.register');
 Route::post('/driver/register', [TransportController::class, 'storeDriver'])->name('driver.register');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+// Public routes for Transport system (authentication required)
+
+Route::get('/ride-request', [TransportController::class, 'rideRequest'])->name('transport.ride-request');
+Route::get('/post-trip', [TransportController::class, 'postTrip'])->name('transport.post-trip');
+Route::get('/driver-trip', [TransportController::class, 'driverTrip'])->name('transport.driver-trip');
+
+
+
+
+// Public routes for Admin panel system (authentication required)
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

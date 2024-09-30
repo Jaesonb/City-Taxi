@@ -43,79 +43,93 @@ class TransportController extends Controller
     }
 
 
-    // Serve the passenger registration page
+    // Serve the passenger ride request page
     public function rideRequest()
     {
         return view('transport.ride-request');
     }
 
-     // Store function for Driver registration
-     public function storeDriver(Request $request)
-     {
-         try {
-             // Validate driver registration inputs
-             $request->validate([
-                 'name' => 'required|string|max:255',
-                 'email' => 'required|string|email|max:255|unique:drivers',
-                 'password' => 'required|string|min:8|confirmed',
-                 'phone_number' => 'required|string|max:20',
-                 'vehicle_number' => 'required|string|max:255',
-                 'status' => 'required|string|in:available,busy',
-                 'color' => 'required|string|max:255|',
-                 'model' => 'required|string|max:255|',
-                 'brand' => 'required|string|max:255|',
-                 'latitude' => 'required|string|max:255',
-                 'longitude' => 'required|string|max:255',
-             ]);
+    // Serve the ride acceptance page to driver
+    public function driverTrip()
+    {
+        return view('transport.driver-trip');
+    }
+
+    // Serve the passenger ride review and payment page
+    public function postTrip()
+    {
+        return view('transport.post-trip');
+    }
+
+    // Store function for Driver registration
+    public function storeDriver(Request $request)
+    {
+        try {
+            // Validate driver registration inputs
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255|unique:drivers',
+                'password' => 'required|string|min:8|confirmed',
+                'phone_number' => 'required|string|max:20',
+                'vehicle_number' => 'required|string|max:255',
+                'status' => 'required|string|in:available,busy',
+                'color' => 'required|string|max:255|',
+                'model' => 'required|string|max:255|',
+                'brand' => 'required|string|max:255|',
+                'latitude' => 'required|string|max:255',
+                'longitude' => 'required|string|max:255',
+            ]);
 
             $plainPassword = $request->password;
 
             $driver = Driver::create([
-                 'name' => $request->name,
-                 'email' => $request->email,
-                 'password' => Hash::make($request->password), // Hash the password
-                 'phone_number' => $request->phone_number,
-                 'vehicle_number' => $request->vehicle_number,
-                 'status' => $request->status,
-                 'model'=> $request->model,
-                 'brand'=> $request->brand,
-                 'color'=> $request->color,
-                 'latitude'=> $request->latitude,
-                 'longitude'=> $request->longitude,
-             ]);
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password), // Hash the password
+                'phone_number' => $request->phone_number,
+                'vehicle_number' => $request->vehicle_number,
+                'status' => $request->status,
+                'model' => $request->model,
+                'brand' => $request->brand,
+                'color' => $request->color,
+                'latitude' => $request->latitude,
+                'longitude' => $request->longitude,
+            ]);
 
-             Mail::to($driver->email)->send(new DriverCreated($driver, $plainPassword));
+            Mail::to($driver->email)->send(new DriverCreated($driver, $plainPassword));
 
-             return redirect('/')->with('success', 'Driver registered successfully.');
-         } catch (\Exception $e) {
-             return redirect()->back()->with('error', 'Error registering driver: ' . $e->getMessage());
-         }
-     }
+            return redirect('/')->with('success', 'Driver registered successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error registering driver: ' . $e->getMessage());
+        }
+    }
 
-     public function storePassenger(Request $request)
-     {
-         try {
-             $request->validate([
-                 'name' => 'required|string|max:255',
-                 'email' => 'required|string|email|max:255|unique:passengers',
-                 'password' => 'required|string|min:8|confirmed',
-                 'phone_number' => 'required|string|max:20',
-             ]);
+    public function storePassenger(Request $request)
+    {
+        try {
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255|unique:passengers',
+                'password' => 'required|string|min:8|confirmed',
+                'phone_number' => 'required|string|max:20',
+            ]);
 
-             $plainPassword = $request->password;
+            $plainPassword = $request->password;
 
-             $passenger = Passenger::create([
-                 'name' => $request->name,
-                 'email' => $request->email,
-                 'password' => Hash::make($request->password),
-                 'phone_number' => $request->phone_number,
-             ]);
+            $passenger = Passenger::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'phone_number' => $request->phone_number,
+            ]);
 
             Mail::to($passenger->email)->send(new PassengerCreated($passenger, $plainPassword));
 
-             return redirect('/')->with('success', 'Passenger registered successfully.');
-         } catch (\Exception $e) {
-             return redirect()->back()->with('error', 'Error registering passenger: ' . $e->getMessage());
-         }
-     }
+            return redirect('/')->with('success', 'Passenger registered successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error registering passenger: ' . $e->getMessage());
+        }
+    }
+
+
 }
