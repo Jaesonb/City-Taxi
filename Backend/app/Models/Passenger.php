@@ -29,4 +29,9 @@ class Passenger extends Authenticatable
     {
         return $this->hasMany(Trip::class);
     }
+
+    public function ratings()
+    {
+        return $this->hasMany(Rating::class);
+    }
 }

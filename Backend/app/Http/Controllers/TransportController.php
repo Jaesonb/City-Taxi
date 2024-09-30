@@ -74,8 +74,9 @@ class TransportController extends Controller
     // Serve the passenger ride review and payment page
     public function postTrip()
     {
-        $passenger = Auth::user();
-        $trips = $passenger->trips ?? collect(); 
+        $passenger = Auth::guard('passenger')->user();
+        // dd($passenger);
+        $trips = $passenger->trips ?? collect();
 
         return view('transport.post-trip', compact('trips'));
     }
@@ -172,7 +173,7 @@ class TransportController extends Controller
         if ($userType == 'driver') {
             $driver = Driver::where('email', $request->email)->first();
             if ($driver && Hash::check($request->password, $driver->password)) {
-                Auth::login($driver);
+                Auth::guard('driver')->login($driver);
                 return redirect()->route('transport.driver-trip'); // Redirect to the driver dashboard route
             }
         }
@@ -181,7 +182,7 @@ class TransportController extends Controller
         if ($userType == 'passenger') {
             $passenger = Passenger::where('email', $request->email)->first();
             if ($passenger && Hash::check($request->password, $passenger->password)) {
-                Auth::login($passenger);
+                Auth::guard('passenger')->login($passenger);
                 return redirect()->route('transport.post-trip'); // Redirect to the passenger dashboard route
             }
         }

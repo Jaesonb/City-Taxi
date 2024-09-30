@@ -32,21 +32,68 @@
     </style>
 </head>
 <body>
+<!-- Navbar with Logout, Profile, and other navigation links -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Taxi App</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('profile.edit') }}">Profile</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('transport.post-trip') }}">My Trips</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('logout') }}"
+                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    Logout
+                </a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                    @csrf
+                </form>
+            </li>
+        </ul>
+    </div>
+</nav>
+
 <div class="container mt-5">
     <h2>Trip Summary</h2>
 
-    <!-- Trip details will be populated here -->
-    <div id="trip-details" class="alert alert-info"></div>
+    <!-- Trip details -->
+    <div class="card mb-4">
+        <div class="card-header">
+            Trip Details
+        </div>
+        <div class="card-body">
+            <p><strong>Pickup Location:</strong> {{ $trip->pickup_location }}</p>
+            <p><strong>Dropoff Location:</strong> {{ $trip->dropoff_location }}</p>
+            <p><strong>Pickup Time:</strong> {{ $trip->pickup_time }}</p>
+            <p><strong>Distance:</strong> {{ number_format($trip->calculateDistance(), 2) }} km</p>
+            <p><strong>Total Fare:</strong> Rs. {{ number_format($trip->calculateFare(), 2) }}</p>
+            <p><strong>Status:</strong> {{ ucfirst($trip->status) }}</p>
+        </div>
+    </div>
 
-    <!-- Payment details -->
-    <div id="payment-details" class="alert alert-success">
-        <h4>Total Fare: $<span id="fare-amount"></span></h4>
+    <!-- Driver details -->
+    <div class="card mb-4">
+        <div class="card-header">
+            Driver Details
+        </div>
+        <div class="card-body">
+            <p><strong>Name:</strong> {{ $trip->driver->name }}</p>
+            <p><strong>Vehicle:</strong> {{ $trip->driver->brand }} {{ $trip->driver->model }} ({{ $trip->driver->vehicle_number }})</p>
+            <p><strong>Phone:</strong> {{ $trip->driver->phone_number }}</p>
+        </div>
     </div>
 
     <!-- Rating form -->
     <div class="mt-4">
         <h4>Rate Your Ride</h4>
-        <form>
+        <form action="{{ route('trip.rate', ['tripId' => $trip->id]) }}" method="POST">
+            @csrf
             <div class="rating">
                 <input type="radio" name="rating" id="star5" value="5"><label for="star5">&#9733;</label>
                 <input type="radio" name="rating" id="star4" value="4"><label for="star4">&#9733;</label>
@@ -58,7 +105,7 @@
             <!-- Comment for driver -->
             <div class="form-group mt-3">
                 <label for="driverComment">Leave a comment for the driver:</label>
-                <textarea class="form-control" id="driverComment" rows="3" placeholder="Write your feedback..."></textarea>
+                <textarea class="form-control" id="driverComment" name="comment" rows="3" placeholder="Write your feedback..."></textarea>
             </div>
 
             <button type="submit" class="btn btn-primary mt-3">Submit Rating</button>

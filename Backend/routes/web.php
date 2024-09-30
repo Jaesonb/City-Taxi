@@ -41,7 +41,7 @@ Route::get('/trip-show/{id}', [TransportController::class, 'show'])->name('trans
 Route::get('/driver-trip', [TransportController::class, 'driverTrip'])->name('transport.driver-trip');
 Route::post('/trip/store', [TransportController::class, 'storeTrip'])->name('trip.store');
 Route::get('/drivers-by-distance', [TransportController::class, 'getDriversByDistance'])->name('drivers.byDistance');
-Route::post('/trip/{id}/rate', [TransportController::class, 'storeRating'])->name('trip.rate');
+Route::post('/trip/{tripId}/rate', [TransportController::class, 'storeRating'])->name('trip.rate');
 
 
 // Public routes for Admin panel system (authentication required)
