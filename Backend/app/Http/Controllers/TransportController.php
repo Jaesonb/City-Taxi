@@ -254,4 +254,34 @@ class TransportController extends Controller
 
         return redirect()->route('transport.trip-show', $trip->id)->with('success', 'Thank you for your feedback!');
     }
+
+    public function acceptTrip($id)
+    {
+        $trip = Trip::findOrFail($id);
+
+        // Only allow acceptance if the trip is still PENDING
+        if ($trip->status == 'PENDING') {
+            $trip->status = 'CONFIRMED';
+            $trip->save();
+
+            return redirect()->back()->with('success', 'Trip accepted successfully.');
+        }
+
+        return redirect()->back()->with('error', 'You cannot accept this trip.');
+    }
+
+    public function declineTrip($id)
+    {
+        $trip = Trip::findOrFail($id);
+
+        // Only allow decline if the trip is still PENDING
+        if ($trip->status == 'PENDING') {
+            $trip->status = 'CANCELLED';
+            $trip->save();
+
+            return redirect()->back()->with('success', 'Trip declined successfully.');
+        }
+
+        return redirect()->back()->with('error', 'You cannot decline this trip.');
+    }
 }
