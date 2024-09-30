@@ -43,6 +43,8 @@ Route::post('/trip/store', [TransportController::class, 'storeTrip'])->name('tri
 Route::get('/drivers-by-distance', [TransportController::class, 'getDriversByDistance'])->name('drivers.byDistance');
 Route::post('/trip/{tripId}/rate', [TransportController::class, 'storeRating'])->name('trip.rate');
 
+Route::get('/driver/accept-trip/{id}', [TransportController::class, 'acceptTrip'])->name('drivers.accept_trip');
+Route::get('/driver/decline-trip/{id}', [TransportController::class, 'declineTrip'])->name('drivers.decline_trip');
 
 // Public routes for Admin panel system (authentication required)
 Route::middleware('auth')->group(function () {
@@ -67,8 +69,6 @@ Route::middleware('auth')->group(function () {
     Route::put('/drivers/{id}', [DriverController::class, 'update'])->name('drivers.update');
     Route::delete('/drivers/{id}', [DriverController::class, 'destroy'])->name('drivers.destroy');
     Route::get('/drivers/{id}/trips', [DriverController::class, 'showTrips'])->name('drivers.trips');
-    Route::get('/driver/accept-trip/{id}', [TransportController::class, 'acceptTrip'])->name('drivers.accept_trip');
-    Route::get('/driver/decline-trip/{id}', [TransportController::class, 'declineTrip'])->name('drivers.decline_trip');
 
     Route::get('/paymentts', [PaymentController::class, 'index'])->name('payments');
     Route::get('/payments/create', [PaymentController::class, 'create'])->name('payments.create');
