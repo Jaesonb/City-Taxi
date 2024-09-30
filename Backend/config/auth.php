@@ -77,12 +77,12 @@ return [
 
         'drivers' => [
             'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\Driver::class),
+            'model' => App\Models\Driver::class,
         ],
 
         'passengers' => [
             'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\Passenger::class),
+            'model' => App\Models\Passenger::class,
         ],
     ],
 

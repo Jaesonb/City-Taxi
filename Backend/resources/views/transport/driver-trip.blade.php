@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,7 +9,32 @@
     <!-- Bootstrap CSS for styling -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
+
 <body>
+    <!-- Navbar with Logout and Profile options -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">City Taxi - Driver Dashboard</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('profile.edit') }}">Profile</a> <!-- Link to driver profile page -->
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('logout') }}"
+                       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                       Logout
+                    </a>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
     <div class="container mt-5">
         <h2>Nearby Trip Requests</h2>
         <div id="trip-requests" class="list-group"></div>
@@ -19,9 +45,10 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
     <script>
-        const driverId = 1; // Assume logged-in driver ID is 1 (Replace with actual driver ID)
-        const driverLatitude = 37.7749; // Replace with actual driver's latitude
-        const driverLongitude = -122.4194; // Replace with actual driver's longitude
+        // Use driver data from Laravel passed as a Blade variable
+        const driverId = {{ $driver->id }};
+        const driverLatitude = {{ $driver->latitude }}; // Use driver's actual latitude
+        const driverLongitude = {{ $driver->longitude }}; // Use driver's actual longitude
         const radius = 5; // Search within 5km radius (can be adjusted)
 
         // Function to fetch nearby trips
@@ -81,4 +108,5 @@
         });
     </script>
 </body>
+
 </html>

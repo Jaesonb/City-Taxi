@@ -19,6 +19,8 @@ Route::get('/admin', function () {
     return redirect('/login');
 });
 
+Route::post('/login-submit', [TransportController::class, 'login'])->name('login.submit');
+
 // Public routes for Transport system (no authentication required)
 Route::get('/driver', [TransportController::class, 'driver'])->name('transport.driver');
 Route::get('/passenger', [TransportController::class, 'passenger'])->name('transport.passenger');
@@ -35,9 +37,11 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard
 
 Route::get('/ride-request', [TransportController::class, 'rideRequest'])->name('transport.ride-request');
 Route::get('/post-trip', [TransportController::class, 'postTrip'])->name('transport.post-trip');
+Route::get('/trip-show/{id}', [TransportController::class, 'show'])->name('transport.trip-show');
 Route::get('/driver-trip', [TransportController::class, 'driverTrip'])->name('transport.driver-trip');
-
-
+Route::post('/trip/store', [TransportController::class, 'storeTrip'])->name('trip.store');
+Route::get('/drivers-by-distance', [TransportController::class, 'getDriversByDistance'])->name('drivers.byDistance');
+Route::post('/trip/{id}/rate', [TransportController::class, 'storeRating'])->name('trip.rate');
 
 
 // Public routes for Admin panel system (authentication required)
