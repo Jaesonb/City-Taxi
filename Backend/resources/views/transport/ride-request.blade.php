@@ -33,7 +33,7 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">City Taxi - Driver Dashboard</a>
+        <a class="navbar-brand" href="#">City Taxi - Ride Request</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -109,7 +109,6 @@
                 @endforeach
             </select>
         </div>
-        <input type="hidden" name="passenger_id" value="{{ Auth::user()->id }}">
         <input type="hidden" name="pickup_time" value="{{ now() }}">
         <input type="hidden" name="status" value="PENDING">
 

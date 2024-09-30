@@ -194,7 +194,6 @@ class TransportController extends Controller
     public function storeTrip(Request $request)
     {
         $validated = $request->validate([
-            'passenger_id' => 'required|exists:passengers,id',
             'driver_id' => 'required|exists:drivers,id',
             'pickup_location' => 'required|string|max:255',
             'pickup_latitude' => 'required|numeric',
@@ -206,10 +205,13 @@ class TransportController extends Controller
             'status' => 'required|string|in:PENDING,CONFIRMED,COMPLETED,CANCELLED',
         ]);
 
-        // Create the trip
+        // Add the authenticated passenger_id to the validated data
+        $validated['passenger_id'] = Auth::guard('passenger')->id();
+
+        // Create the trip with the passenger's ID
         $trip = Trip::create($validated);
 
-        return redirect()->back()->with('success', 'Trip created successfully.');
+        return redirect()->route('transport.post-trip')->with('success', 'Trip created successfully.');
     }
 
     public function getDriversByDistance(Request $request)
@@ -250,6 +252,6 @@ class TransportController extends Controller
             'comment' => $request->comment,
         ]);
 
-        return redirect()->route('trip.show', $trip->id)->with('success', 'Thank you for your feedback!');
+        return redirect()->route('transport.trip-show', $trip->id)->with('success', 'Thank you for your feedback!');
     }
 }

@@ -11,7 +11,7 @@
 <body>
     <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Taxi Service</a>
+        <a class="navbar-brand" href="#">My Trips</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -57,7 +57,7 @@
                         <tr>
                             <td>{{ $trip->pickup_location }}</td>
                             <td>{{ $trip->dropoff_location }}</td>
-                            <td>${{ number_format($trip->fare, 2) }}</td>
+                            <td>Rs.{{ number_format($trip->fare, 2) }}</td>
                             <td>{{ $trip->status }}</td>
                             <td>
                                 <a href="{{ route('transport.trip-show', $trip->id) }}" class="btn btn-info btn-sm">View</a>

@@ -59,6 +59,11 @@ class Trip extends Model
         return $this->hasOne(Payment::class);
     }
 
+    public function rating()
+    {
+        return $this->hasOne(Rating::class);
+    }
+
     /**
      * Calculate the distance between pickup and dropoff locations.
      */
