@@ -11,16 +11,46 @@
 <body>
     <div class="container">
         <h1 class="my-5 text-center">Login</h1>
-        <form id="loginForm" class="form">
+
+        <!-- Display error messages if they exist -->
+        @if (session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+
+        <!-- Display validation errors -->
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <!-- Login form -->
+        <form action="{{ route('login.submit') }}" method="POST" class="form">
+            @csrf
             <div class="form-group mb-3">
                 <label for="email">Email</label>
-                <input type="email" class="form-control" id="email" required>
+                <input type="email" name="email" class="form-control" id="email" required>
             </div>
             <div class="form-group mb-3">
                 <label for="password">Password</label>
-                <input type="password" class="form-control" id="password" required>
+                <input type="password" name="password" class="form-control" id="password" required>
             </div>
-            <button id="loginSubmit" class="btn btn-primary w-100">Login</button>
+
+            <div class="form-group mb-3">
+                <label for="user_type">Login As</label>
+                <select name="user_type" id="user_type" class="form-control" required>
+                    <option value="driver">Driver</option>
+                    <option value="passenger">Passenger</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Login</button>
         </form>
 
         <div class="mt-4 text-center">
@@ -29,9 +59,6 @@
             <a href="{{ route('transport.passenger-register') }}" class="btn btn-secondary">Passenger Register</a>
         </div>
     </div>
-
-    <!-- <script src="{{ asset('public/transport/script.js') }}"></script> -->
-    <!-- <script src="script.js"></script> -->
 </body>
 
 </html>

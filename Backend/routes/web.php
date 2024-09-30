@@ -19,6 +19,8 @@ Route::get('/admin', function () {
     return redirect('/login');
 });
 
+Route::post('/login-submit', [TransportController::class, 'login'])->name('login.submit');
+
 // Public routes for Transport system (no authentication required)
 Route::get('/driver', [TransportController::class, 'driver'])->name('transport.driver');
 Route::get('/passenger', [TransportController::class, 'passenger'])->name('transport.passenger');
@@ -35,10 +37,14 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard
 
 Route::get('/ride-request', [TransportController::class, 'rideRequest'])->name('transport.ride-request');
 Route::get('/post-trip', [TransportController::class, 'postTrip'])->name('transport.post-trip');
+Route::get('/trip-show/{id}', [TransportController::class, 'show'])->name('transport.trip-show');
 Route::get('/driver-trip', [TransportController::class, 'driverTrip'])->name('transport.driver-trip');
+Route::post('/trip/store', [TransportController::class, 'storeTrip'])->name('trip.store');
+Route::get('/drivers-by-distance', [TransportController::class, 'getDriversByDistance'])->name('drivers.byDistance');
+Route::post('/trip/{tripId}/rate', [TransportController::class, 'storeRating'])->name('trip.rate');
 
-
-
+Route::get('/driver/accept-trip/{id}', [TransportController::class, 'acceptTrip'])->name('drivers.accept_trip');
+Route::get('/driver/decline-trip/{id}', [TransportController::class, 'declineTrip'])->name('drivers.decline_trip');
 
 // Public routes for Admin panel system (authentication required)
 Route::middleware('auth')->group(function () {
@@ -63,8 +69,6 @@ Route::middleware('auth')->group(function () {
     Route::put('/drivers/{id}', [DriverController::class, 'update'])->name('drivers.update');
     Route::delete('/drivers/{id}', [DriverController::class, 'destroy'])->name('drivers.destroy');
     Route::get('/drivers/{id}/trips', [DriverController::class, 'showTrips'])->name('drivers.trips');
-    Route::get('/driver/accept-trip/{id}', [DriverController::class, 'acceptTrip'])->name('drivers.accept_trip');
-    Route::get('/driver/decline-trip/{id}', [DriverController::class, 'declineTrip'])->name('drivers.decline_trip');
 
     Route::get('/paymentts', [PaymentController::class, 'index'])->name('payments');
     Route::get('/payments/create', [PaymentController::class, 'create'])->name('payments.create');
