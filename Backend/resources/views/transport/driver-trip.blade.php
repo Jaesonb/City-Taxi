@@ -19,15 +19,18 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
+                <!-- Profile Link -->
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('profile.edit') }}">Profile</a> <!-- Link to driver profile page -->
+                    <a class="nav-link" href="{{ route('profile.edit') }}">Profile</a>
                 </li>
+
+                <!-- Logout Link -->
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('logout') }}"
                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                       Logout
+                        Logout
                     </a>
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                         @csrf
                     </form>
                 </li>
