@@ -7,6 +7,9 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TransportController;
 use App\Http\Controllers\TripController;
+use App\Http\Middleware\CheckAllGuards;
+use App\Http\Middleware\DriverMiddleware;
+use App\Http\Middleware\PassengerMiddleware;
 use Illuminate\Support\Facades\Route;
 
 
@@ -14,44 +17,40 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('transport.index'); // This will serve the index.blade.php from resources/views/transport/
 })->name('transport.index');
-
 Route::get('/admin', function () {
     return redirect('/login');
 });
-
 Route::post('/login-submit', [TransportController::class, 'login'])->name('login.submit');
 
-// Public routes for Transport system (no authentication required)
 Route::get('/driver', [TransportController::class, 'driver'])->name('transport.driver');
 Route::get('/passenger', [TransportController::class, 'passenger'])->name('transport.passenger');
 Route::get('/driver-register', [TransportController::class, 'driverRegister'])->name('transport.driver-register');
 Route::get('/passenger-register', [TransportController::class, 'passengerRegister'])->name('transport.passenger-register');
-
-
 Route::post('/passenger/register', [TransportController::class, 'storePassenger'])->name('passenger.register');
 Route::post('/driver/register', [TransportController::class, 'storeDriver'])->name('driver.register');
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::middleware([DriverMiddleware::class])->group(function () {
+    Route::get('/driver/accept-trip/{id}', [TransportController::class, 'acceptTrip'])->name('drivers.accept_trip');
+    Route::get('/driver/decline-trip/{id}', [TransportController::class, 'declineTrip'])->name('drivers.decline_trip');
+    Route::get('/driver-trip', [TransportController::class, 'driverTrip'])->name('transport.driver-trip');
+    Route::post('/driver/logout', [TransportController::class, 'destroyDriver'])->name('driver.logout');
+});
 
-// Public routes for Transport system (authentication required)
+Route::middleware([PassengerMiddleware::class])->group(function () {
+    Route::get('/ride-request', [TransportController::class, 'rideRequest'])->name('transport.ride-request');
+    Route::get('/post-trip', [TransportController::class, 'postTrip'])->name('transport.post-trip');
+    Route::get('/trip-show/{id}', [TransportController::class, 'show'])->name('transport.trip-show');
+    Route::post('/trip/store', [TransportController::class, 'storeTrip'])->name('trip.store');
+    Route::get('/drivers-by-distance', [TransportController::class, 'getDriversByDistance'])->name('drivers.byDistance');
+    Route::post('/trip/{tripId}/rate', [TransportController::class, 'storeRating'])->name('trip.rate');
+    Route::post('/passenger/logout', [TransportController::class, 'destroyPassenger'])->name('passenger.logout');
+});
 
-Route::get('/ride-request', [TransportController::class, 'rideRequest'])->name('transport.ride-request');
-Route::get('/post-trip', [TransportController::class, 'postTrip'])->name('transport.post-trip');
-Route::get('/trip-show/{id}', [TransportController::class, 'show'])->name('transport.trip-show');
-Route::get('/driver-trip', [TransportController::class, 'driverTrip'])->name('transport.driver-trip');
-Route::post('/trip/store', [TransportController::class, 'storeTrip'])->name('trip.store');
-Route::get('/drivers-by-distance', [TransportController::class, 'getDriversByDistance'])->name('drivers.byDistance');
-Route::post('/trip/{tripId}/rate', [TransportController::class, 'storeRating'])->name('trip.rate');
-
-Route::get('/driver/accept-trip/{id}', [TransportController::class, 'acceptTrip'])->name('drivers.accept_trip');
-Route::get('/driver/decline-trip/{id}', [TransportController::class, 'declineTrip'])->name('drivers.decline_trip');
-
-// Public routes for Admin panel system (authentication required)
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/passengers', [PassengerController::class, 'index'])->name('passengers');
     Route::get('/passengers/create', [PassengerController::class, 'create'])->name('passengers.create');
     Route::post('/passengers', [PassengerController::class, 'store'])->name('passengers.store');

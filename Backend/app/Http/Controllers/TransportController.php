@@ -284,4 +284,16 @@ class TransportController extends Controller
 
         return redirect()->back()->with('error', 'You cannot decline this trip.');
     }
+
+    public function destroyPassenger()
+    {
+        Auth::guard('passenger')->logout();
+        return redirect('/')->with('status', 'Logged out successfully');
+    }
+
+    public function destroyDriver()
+    {
+        Auth::guard('driver')->logout();
+        return redirect('/')->with('status', 'Logged out successfully');
+    }
 }
