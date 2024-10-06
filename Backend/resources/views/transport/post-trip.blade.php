@@ -20,15 +20,15 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('transport.ride-request') }}">Request a Ride</a>
                 </li>
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a class="nav-link" href="{{ route('profile.edit') }}">Profile</a>
-                </li>
+                </li> --}}
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('logout') }}"
+                    <a class="nav-link" href="{{ route('passenger.logout') }}"
                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                        Logout
                     </a>
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    <form id="logout-form" action="{{ route('passenger.logout') }}" method="POST" style="display: none;">
                         @csrf
                     </form>
                 </li>
