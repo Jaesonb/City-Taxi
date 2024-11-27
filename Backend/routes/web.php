@@ -68,6 +68,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/drivers/{id}', [DriverController::class, 'update'])->name('drivers.update');
     Route::delete('/drivers/{id}', [DriverController::class, 'destroy'])->name('drivers.destroy');
     Route::get('/drivers/{id}/trips', [DriverController::class, 'showTrips'])->name('drivers.trips');
+    Route::post('/driver/receive-payment/{id}', [PaymentController::class, 'receivePayment'])->name('drivers.receive_payment');
 
     Route::get('/paymentts', [PaymentController::class, 'index'])->name('payments');
     Route::get('/payments/create', [PaymentController::class, 'create'])->name('payments.create');
