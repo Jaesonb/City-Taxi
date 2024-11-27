@@ -19,11 +19,6 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
-                <!-- Profile Link -->
-                {{-- <li class="nav-item">
-                    <a class="nav-link" href="{{ route('profile.edit') }}">Profile</a>
-                </li> --}}
-
                 <!-- Logout Link -->
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('driver.logout') }}"
@@ -59,6 +54,10 @@
                             </div>
                         @elseif ($trip->status == 'CONFIRMED')
                             <p class="text-success">You have accepted this trip.</p>
+                            <form action="{{ route('drivers.receive_payment', $trip->id) }}" method="POST" class="mt-2">
+                                @csrf
+                                <button type="submit" class="btn btn-primary btn-sm">Receive Payment</button>
+                            </form>
                         @elseif ($trip->status == 'CANCELLED')
                             <p class="text-danger">You have declined this trip.</p>
                         @endif

@@ -154,4 +154,30 @@ class PaymentController extends Controller
         }
     }
 
+    public function receivePayment(Request $request, $id)
+    {
+        try {
+            $trip = Trip::findOrFail($id);
+
+            // Ensure the trip has been confirmed before processing payment
+            if ($trip->status !== 'CONFIRMED') {
+                return redirect()->back()->with('error', 'Payment can only be received for confirmed trips.');
+            }
+
+            // Create payment entry
+            Payment::create([
+                'trip_id' => $trip->id,
+                'amount' => $trip->fare,
+                'payment_method' => 'CASH',
+                'payment_status' => 'PAID',
+            ]);
+
+            return redirect()->route('transport.driver-trip')->with('success', 'Payment received successfully.');
+        } catch (\Exception $e) {
+            Log::error('Error to process payment for the trips: ' . $e->getMessage());
+
+            return redirect()->back()->with('error', 'Failed to process payment. Please try again.');
+        }
+    }
+
 }

@@ -20,4 +20,17 @@ class Payment extends Model
     {
         return $this->belongsTo(Trip::class);
     }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        // When a payment is created, update the trip status to 'COMPLETED'
+        static::created(function ($payment) {
+            $trip = $payment->trip;
+            if ($trip) {
+                $trip->update(['status' => 'COMPLETED']);
+            }
+        });
+    }
 }
